@@ -1,15 +1,14 @@
-package com.sakshitapp.android
+package com.sakshitapp.android.view
 
 import android.os.Bundle
-import android.util.Log
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ActivityMainBinding
-import com.sakshitapp.shared.Greeting
 
 class MainActivity : AppCompatActivity() {
 
@@ -20,8 +19,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        Log.i("Main Activity", "Hello from shared module: " + (Greeting().greeting()))
 
 
         val navView: BottomNavigationView = binding.navView

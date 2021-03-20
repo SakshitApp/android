@@ -1,6 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
     ext.kotlin_version = "1.4.31"
+    ext.sqlDelightVersion="1.4.2"
     repositories {
         google()
         mavenCentral()
@@ -10,6 +11,8 @@ buildscript {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath 'com.google.gms:google-services:4.3.5'
         classpath 'com.google.firebase:firebase-crashlytics-gradle:2.5.1'
+        classpath("org.jetbrains.kotlin:kotlin-serialization:$kotlin_version")
+        classpath("com.squareup.sqldelight:gradle-plugin:$sqlDelightVersion")
     }
 }
 

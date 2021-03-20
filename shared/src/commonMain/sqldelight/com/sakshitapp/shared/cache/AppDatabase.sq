@@ -1,0 +1,18 @@
+CREATE TABLE User (
+uuid TEXT NOT NULL,
+name TEXT,
+photoURL TEXT,
+email TEXT,
+phoneNumber TEXT,
+role TEXT
+);
+
+insertUser:
+INSERT INTO User(uuid, name, photoURL, email, phoneNumber, role)
+VALUES(?, ?, ?, ?, ?, ?);
+
+removeAllUser:
+DELETE FROM User;
+
+selectUser:
+SELECT * FROM User LIMIT 1;

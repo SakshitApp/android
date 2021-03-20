@@ -35,6 +35,7 @@ android {
     }
     buildFeatures {
         dataBinding true
+        viewBinding true
     }
 }
 
@@ -57,4 +58,5 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     implementation 'com.google.firebase:firebase-analytics'
     implementation 'com.google.firebase:firebase-crashlytics'
+    implementation 'com.google.firebase:firebase-auth-ktx'
 }
