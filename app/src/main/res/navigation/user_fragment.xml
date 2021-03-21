@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/user_fragment"
+    app:startDestination="@id/loginFragment">
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.sakshitapp.android.view.fragment.login.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment"
+            app:popUpTo="@id/user_fragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_roleFragment"
+            app:destination="@id/roleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.sakshitapp.android.view.fragment.signup.SignUpFragment"
+        android:label="SignUpFragment" >
+        <action
+            android:id="@+id/action_signUpFragment_to_roleFragment"
+            app:destination="@id/roleFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/roleFragment"
+        android:name="com.sakshitapp.android.view.fragment.roles.RoleFragment"
+        android:label="RoleFragment" />
+</navigation>

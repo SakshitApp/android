@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class Response<T>(
     @SerialName("code")
-    val code: Int,
+    val code: Int = 200,
     @SerialName("data")
-    val data: T,
+    val data: T?,
     @SerialName("error")
-    val error: String
+    val error: String? = null
 )

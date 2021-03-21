@@ -22,6 +22,7 @@ kotlin {
             }
         }
     }
+    jvm()
 
     val coroutinesVersion = "1.3.9-native-mt"
     val serializationVersion = "1.0.0-RC"
@@ -49,6 +50,11 @@ kotlin {
             dependencies {
                 implementation("io.ktor:ktor-client-ios:$ktorVersion")
                 implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
+            }
+        }
+        val jvmMain by getting {
+            dependencies {
+                implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
             }
         }
     }

@@ -12,10 +12,10 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
 
-class ServerAPI() {
+class ServerAPI {
 
     companion object {
-        private const val URL = "https://powerful-badlands-26832.herokuapp.com/"
+        private const val URL = "https://powerful-badlands-26832.herokuapp.com"
         private const val AUTH = "Authorization"
     }
 
@@ -27,25 +27,22 @@ class ServerAPI() {
         install(Logging)
         defaultRequest {
             header("Content-Type", ContentType.Application.Json.toString())
+            header(AUTH, "Bearer ${SharedSDK.token}")
         }
     }
 
     suspend fun getUser(): Response<User> {
-        return httpClient.get(URL) {
-            header(AUTH, SharedSDK.token)
-        }
+        return httpClient.get("${URL}/user")
     }
 
     suspend fun updateUser(user: User): Response<User> {
-        return httpClient.post(URL) {
-            header(AUTH, SharedSDK.token)
+        return httpClient.post("${URL}/user") {
             body = user
         }
     }
 
     suspend fun updateUser(user: Map<*, *>): Response<User> {
-        return httpClient.post(URL) {
-            header(AUTH, SharedSDK.token)
+        return httpClient.patch("${URL}/user") {
             body = user
         }
     }
