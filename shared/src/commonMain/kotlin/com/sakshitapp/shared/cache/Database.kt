@@ -34,7 +34,7 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
             photoURL = photoUrl,
             email = email,
             phoneNumber = phoneNumber,
-            role = role?.let { Role.valueOf(it) }
+            role = role?.let { listOf(Role.valueOf(it)) }
         )
     }
 
@@ -53,7 +53,7 @@ internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
             photoURL = user.photoURL,
             email = user.email,
             phoneNumber = user.phoneNumber,
-            role = user.role?.name
+            role = if (!user.role.isNullOrEmpty()) user.role.first().name else null
         )
     }
 }

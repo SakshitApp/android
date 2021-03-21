@@ -21,10 +21,13 @@
         android:name="com.sakshitapp.android.view.fragment.signup.SignUpFragment"
         android:label="SignUpFragment" >
         <action
+            android:id="@+id/action_signUpFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+        <action
             android:id="@+id/action_signUpFragment_to_roleFragment"
             app:destination="@id/roleFragment" />
     </fragment>
-    <fragment
+    <dialog
         android:id="@+id/roleFragment"
         android:name="com.sakshitapp.android.view.fragment.roles.RoleFragment"
         android:label="RoleFragment" />

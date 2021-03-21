@@ -11,6 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SakshitApp"
+        android:windowBackground="@drawable/ic_splash"
         android:name=".SakshitApp">
         <activity
             android:name=".view.SplashActivity"

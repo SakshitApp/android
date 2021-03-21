@@ -1,6 +1,7 @@
 package com.sakshitapp.android
 
 import com.google.firebase.auth.FirebaseAuth
+import com.sakshitapp.shared.model.Role
 import com.sakshitapp.shared.model.User
 import com.sakshitapp.shared.repository.UserRepository
 import kotlinx.coroutines.GlobalScope
@@ -51,13 +52,34 @@ class FCMUserRepository : UserRepository() {
             }
     }
 
-    suspend fun create(email: String, password: String): Boolean = suspendCoroutine { coroutine ->
+    suspend fun create(
+        email: String,
+        password: String,
+        role: Role
+    ): User = suspendCoroutine { coroutine ->
         FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
             .addOnCompleteListener {
-                if (it.isSuccessful) {
-                    coroutine.resume(true)
+                if (it.isSuccessful && it.result?.user != null) {
+                    it.result?.user?.getIdToken(true)?.addOnCompleteListener { task ->
+                        if (task.isSuccessful && task.result?.token != null) {
+                            task.result?.token?.let { setToken(it) }
+                            GlobalScope.launch {
+                                kotlin.runCatching {
+                                    super.setRole(role)
+                                }.onSuccess {
+                                    coroutine.resume(it ?: User(""))
+                                }.onFailure {
+                                    coroutine.resumeWithException(it)
+                                }
+                            }
+                        } else {
+                            coroutine.resumeWithException(
+                                task.exception ?: java.lang.Exception("Not Found")
+                            )
+                        }
+                    }
                 } else {
-                    coroutine.resumeWithException(it.exception ?: Exception("Failed"))
+                    coroutine.resumeWithException(it.exception ?:Exception("Failed"))
                 }
             }
     }

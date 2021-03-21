@@ -16,5 +16,5 @@ data class User(
     @SerialName("phoneNumber")
     val phoneNumber: String? = null,
     @SerialName("role")
-    val role: Role? = null
+    val role: List<Role>? = null
 )

@@ -57,7 +57,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             app:endIconMode="password_toggle"
-            app:layout_constraintBottom_toTopOf="@+id/forgotPassword"
+            app:layout_constraintBottom_toTopOf="@+id/role_title"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -70,30 +70,60 @@
                 android:inputType="textPassword" />
         </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/forgotPassword"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:layout_width="wrap_content"
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/role_title"
+            android:text="@string/role_title"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/forgot_password"
-            android:textAllCaps="false"
-            app:layout_constraintBottom_toTopOf="@+id/login"
-            app:layout_constraintRight_toRightOf="@+id/tfPassword"
-            app:layout_constraintTop_toBottomOf="@+id/tfPassword"
-            app:layout_constraintWidth_percent="0.7" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/login"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@string/login"
-            android:textAllCaps="false"
-            app:cornerRadius="50dp"
-            app:layout_constraintBottom_toTopOf="@+id/loginOr"
+            android:layout_marginTop="12dp"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/role"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
+            app:layout_constraintTop_toBottomOf="@+id/tfPassword"/>
+
+        <com.google.android.material.button.MaterialButtonToggleGroup
+            android:id="@+id/role"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:singleSelection="true"
+            app:selectionRequired="true"
+            app:checkedButton="@+id/student"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toTopOf="@+id/sign_up"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/role_title">
+            <Button
+                android:id="@+id/student"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/role_student_type"
+                android:textAllCaps="false"
+                style="?attr/materialButtonOutlinedStyle"
+                />
+            <Button
+                android:id="@+id/teacher"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/role_teacher_type"
+                android:textAllCaps="false"
+                style="?attr/materialButtonOutlinedStyle"
+                />
+        </com.google.android.material.button.MaterialButtonToggleGroup>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/sign_up"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sign_up"
+            android:textAllCaps="false"
+            app:cornerRadius="50dp"
+            app:layout_constraintBottom_toTopOf="@+id/loginOr"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/role"
             app:layout_constraintWidth_percent="0.7" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -101,18 +131,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/loginOr"
-            app:layout_constraintBottom_toTopOf="@+id/create_new"
+            app:layout_constraintBottom_toTopOf="@+id/login"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/login" />
+            app:layout_constraintTop_toBottomOf="@+id/sign_up" />
 
         <com.google.android.material.button.MaterialButton
             style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:id="@+id/create_new"
+            android:id="@+id/login"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@string/create_new_user"
+            android:text="@string/already_signed_up"
             android:textAllCaps="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintHorizontal_bias="0.5"

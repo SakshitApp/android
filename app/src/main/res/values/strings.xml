@@ -11,4 +11,10 @@
     <string name="login">Login</string>
     <string name="loginOr">----  Or ----</string>
     <string name="create_new_user">Create New User</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="role_title">I will be</string>
+    <string name="role_student_type">Studing</string>
+    <string name="role_teacher_type">Teaching</string>
+    <string name="already_signed_up">already signed up</string>
+    <string name="save">Save</string>
 </resources>

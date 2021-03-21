@@ -102,7 +102,7 @@ class LoginFragment: Fragment() {
             } else {
                 activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
             }
-            binding.loading.visibility = if (it) View.VISIBLE else View.GONE
+            binding.loading.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
     }
 

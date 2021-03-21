@@ -24,7 +24,10 @@ class ServerAPI {
             val json = Json { ignoreUnknownKeys = true }
             serializer = KotlinxSerializer(json)
         }
-        install(Logging)
+        install(Logging){
+            logger = Logger.DEFAULT
+            level = LogLevel.ALL
+        }
         defaultRequest {
             header("Content-Type", ContentType.Application.Json.toString())
             header(AUTH, "Bearer ${SharedSDK.token}")
