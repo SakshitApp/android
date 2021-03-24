@@ -38,13 +38,14 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
-                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+//                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+//                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+                implementation("com.russhwolf:multiplatform-settings:0.7.4")
             }
         }
         val androidMain by getting {
             dependencies {
-                implementation("io.ktor:ktor-client-android:$ktorVersion")
+                implementation("io.ktor:ktor-client-okhttp:$ktorVersion")
                 implementation("com.squareup.sqldelight:android-driver:$sqlDelightVersion")
             }
         }
@@ -54,11 +55,12 @@ kotlin {
                 implementation("com.squareup.sqldelight:native-driver:$sqlDelightVersion")
             }
         }
-        val jvmMain by getting {
-            dependencies {
-                implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
-            }
-        }
+//        val jvmMain by getting {
+//            dependencies {
+//                implementation("io.ktor:ktor-client-java:$ktorVersion")
+//                implementation("com.squareup.sqldelight:sqlite-driver:$sqlDelightVersion")
+//            }
+//        }
     }
 }
 

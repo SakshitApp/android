@@ -1,9 +1,10 @@
 package com.sakshitapp.shared.cache
 
 import com.sakshitapp.shared.model.Role
+import com.squareup.sqldelight.db.SqlDriver
 
-internal class Database(databaseDriverFactory: DatabaseDriverFactory) {
-    private val database = AppDatabase(databaseDriverFactory.createDriver())
+internal class Database(driver: SqlDriver){
+    private val database = AppDatabase(driver)
     private val dbQuery = database.appDatabaseQueries
 
     internal fun clearDatabase() {

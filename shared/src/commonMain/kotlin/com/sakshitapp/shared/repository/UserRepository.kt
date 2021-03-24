@@ -1,27 +1,39 @@
 package com.sakshitapp.shared.repository
 
-import com.sakshitapp.shared.SharedSDK
+import com.russhwolf.settings.Settings
+import com.russhwolf.settings.set
+import com.sakshitapp.shared.SharedFactory
+import com.sakshitapp.shared.cache.Database
+import com.sakshitapp.shared.logMessage
 import com.sakshitapp.shared.model.Role
 import com.sakshitapp.shared.model.User
 import com.sakshitapp.shared.remote.ServerAPI
 
 open class UserRepository {
     private val api = ServerAPI()
+    private val database: Database by lazy {
+        SharedFactory.getInstance().database()
+    }
+    private val shared: Settings by lazy {
+        SharedFactory.getInstance().preference()
+    }
 
     open fun setToken(token: String) {
-        SharedSDK.token = token
+        shared["token"] = token
     }
 
     @Throws(Exception::class)
     open suspend fun getUser(forceReload: Boolean): User? {
-        if (SharedSDK.token == null) return null
-        val cachedUser = SharedSDK.database.getUser()
+        logMessage("UserRepository getUser $forceReload")
+        val cachedUser = database.getUser()
         return if (cachedUser != null && !forceReload) {
+            logMessage("UserRepository getUser cached $cachedUser")
             cachedUser
         } else {
             api.getUser().let {
-                SharedSDK.database.clearDatabase()
-                SharedSDK.database.createUser(it.data)
+                logMessage("UserRepository getUser response $it")
+                database.clearDatabase()
+                database.createUser(it.data)
                 it.data
             }
         }
@@ -29,39 +41,43 @@ open class UserRepository {
 
     @Throws(Exception::class)
     open suspend fun updateUser(user: User): User? {
-        if (SharedSDK.token == null) return null
+        logMessage("UserRepository updateUser $user")
         return api.updateUser(user).let {
-            SharedSDK.database.clearUser()
-            SharedSDK.database.createUser(it.data)
+            logMessage("UserRepository updateUser response $it")
+            database.clearUser()
+            database.createUser(it.data)
             it.data
         }
     }
 
     @Throws(Exception::class)
     open suspend fun setRole(role: Role): User? {
-        if (SharedSDK.token == null) return null
+        logMessage("UserRepository setRole $role")
         return api.updateUser(mapOf("role" to listOf(role.name))).let {
-            SharedSDK.database.clearUser()
-            SharedSDK.database.createUser(it.data)
+            logMessage("UserRepository setRole response $it")
+            database.clearUser()
+            database.createUser(it.data)
             it.data
         }
     }
 
     @Throws(Exception::class)
     open suspend fun sendFCMToken(token: String): User? {
-        if (SharedSDK.token == null) return null
+        logMessage("UserRepository sendFCMToken $token")
         return api.updateUser(mapOf("fcmToken" to token)).let {
-            SharedSDK.database.clearUser()
-            SharedSDK.database.createUser(it.data)
+            logMessage("UserRepository sendFCMToken response $it")
+            database.clearUser()
+            database.createUser(it.data)
             it.data
         }
     }
 
     @Throws(Exception::class)
     open suspend fun delete() {
-        if (SharedSDK.token == null) return
+        logMessage("UserRepository delete")
         return api.updateUser(mapOf("isActive" to false)).let {
-            SharedSDK.database.clearUser()
+            logMessage("UserRepository delete response $it")
+            database.clearUser()
         }
     }
 }
