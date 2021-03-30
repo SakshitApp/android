@@ -1,40 +1,91 @@
 package com.sakshitapp.android.view.fragment.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.TextView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavOptions
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.fragment.findNavController
+import com.google.android.material.snackbar.Snackbar
+import com.sakshitapp.android.R
+import com.sakshitapp.android.adapter.CourseStatusAdapter
 import com.sakshitapp.android.databinding.FragmentHomeBinding
+import com.sakshitapp.android.view.MainActivity
+import com.sakshitapp.android.view.fragment.login.LoginViewModel
+import com.sakshitapp.android.viewmodel.ViewModelFactory
+import com.sakshitapp.shared.model.CourseState
+import com.sakshitapp.shared.model.EditCourse
 
 class HomeFragment : Fragment() {
 
-    private lateinit var homeViewModel: HomeViewModel
+    private val viewModel: HomeViewModel by viewModels {
+        ViewModelFactory()
+    }
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var adapter: CourseStatusAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
-
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        adapter = CourseStatusAdapter(object: CourseStatusAdapter.Callback{
+            override fun onClick(course: EditCourse) = findNavController()
+                .navigate(R.id.action_navigation_home_to_editCourseFragment, bundleOf("courseId" to course.uuid))
 
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner, Observer {
-            textView.text = it
+            override fun onDelete(course: EditCourse) = viewModel.delete(course)
+
+            override fun onStateChange(course: EditCourse, state: CourseState) = viewModel.changeState(course, state)
+
         })
+        binding.courseRv.adapter = adapter
+        binding.refresh.setOnRefreshListener {
+            viewModel.loadDrafts(true)
+        }
+
+        val createCourseFab = binding.fabCreateCourse
+        createCourseFab.setOnClickListener {
+            findNavController()
+                .navigate(R.id.action_navigation_home_to_editCourseFragment)
+        }
+        observe()
         return root
+    }
+
+    fun observe() {
+        viewModel.getDrafts().observe(viewLifecycleOwner, { drafts ->
+            binding.refresh.isRefreshing = false
+            adapter.submitList(drafts)
+        })
+        viewModel.error().observe(viewLifecycleOwner, {
+            binding.refresh.isRefreshing = false
+            Snackbar.make(binding.root, it, Snackbar.LENGTH_LONG).show()
+        })
+        viewModel.progress().observe(viewLifecycleOwner, {
+            if (it) {
+                activity?.window?.setFlags(
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE,
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            } else {
+                activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+            }
+            binding.loading.visibility = if (it) View.VISIBLE else View.INVISIBLE
+        })
     }
 
     override fun onDestroyView() {

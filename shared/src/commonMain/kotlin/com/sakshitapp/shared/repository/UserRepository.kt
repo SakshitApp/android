@@ -32,7 +32,7 @@ open class UserRepository {
         } else {
             api.getUser().let {
                 logMessage("UserRepository getUser response $it")
-                database.clearDatabase()
+                database.clearUser()
                 database.createUser(it.data)
                 it.data
             }

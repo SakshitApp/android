@@ -3,6 +3,8 @@ package com.sakshitapp.shared.remote
 import com.russhwolf.settings.Settings
 import com.sakshitapp.shared.SharedFactory
 import com.sakshitapp.shared.logMessage
+import com.sakshitapp.shared.model.Category
+import com.sakshitapp.shared.model.EditCourse
 import com.sakshitapp.shared.model.Response
 import com.sakshitapp.shared.model.User
 import io.ktor.client.HttpClient
@@ -60,6 +62,40 @@ class ServerAPI {
         logMessage("ServerAPI updateUser $user")
         return httpClient.patch("${URL}/user") {
             body = user
+        }
+    }
+
+    @Throws(Exception::class)
+    suspend fun getDraftCourses(): Response<List<EditCourse>> {
+        logMessage("ServerAPI getEditableCourses")
+        return httpClient.get("${URL}/course/edit")
+    }
+
+    @Throws(Exception::class)
+    suspend fun getNewDraftCourse(): Response<EditCourse> {
+        logMessage("ServerAPI getNewCourse")
+        return httpClient.get("${URL}/course/edit/new")
+    }
+
+    @Throws(Exception::class)
+    suspend fun getDraftCourse(courseId: String): Response<EditCourse> {
+        logMessage("ServerAPI getEditableCourse $courseId")
+        return httpClient.get("${URL}/course/edit/$courseId")
+    }
+
+    @Throws(Exception::class)
+    suspend fun updateCourse(course: EditCourse): Response<EditCourse> {
+        logMessage("ServerAPI updateCourse $course")
+        return httpClient.post("${URL}/course/edit") {
+            body = course
+        }
+    }
+
+    @Throws(Exception::class)
+    suspend fun deleteCourse(course: EditCourse): Response<EditCourse> {
+        logMessage("ServerAPI updateCourse $course")
+        return httpClient.delete("${URL}/course/edit") {
+            body = course
         }
     }
 }

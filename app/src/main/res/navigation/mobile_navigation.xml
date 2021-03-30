@@ -9,7 +9,11 @@
         android:id="@+id/navigation_home"
         android:name="com.sakshitapp.android.view.fragment.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_editCourseFragment"
+            app:destination="@id/editCourseFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_dashboard"
@@ -22,4 +26,51 @@
         android:name="com.sakshitapp.android.view.fragment.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/editCourseFragment"
+        android:name="com.sakshitapp.android.view.fragment.edit.course.EditCourseFragment"
+        android:label="Edit Course"
+        tools:layout="@layout/fragment_edit_course">
+        <argument
+            android:name="courseId"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_editCourseFragment_to_editLessonFragment"
+            app:destination="@id/editLessonFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editLessonFragment"
+        android:name="com.sakshitapp.android.view.fragment.edit.lesson.EditLessonFragment"
+        android:label="Edit Lesson"
+        tools:layout="@layout/fragment_edit_lesson" >
+        <argument
+            android:name="courseId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lessonId"
+            app:argType="string"
+            app:nullable="true" />
+        <action
+            android:id="@+id/action_editLessonFragment_to_editQuestionFragment"
+            app:destination="@id/editQuestionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/editQuestionFragment"
+        android:name="com.sakshitapp.android.view.fragment.edit.question.EditQuestionFragment"
+        android:label="EditQuestionFragment" >
+        <argument
+            android:name="courseId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lessonId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="questionId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
 </navigation>
