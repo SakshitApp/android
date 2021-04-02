@@ -3,6 +3,7 @@ package com.sakshitapp.android.view
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -99,6 +100,16 @@ class MainActivity : AppCompatActivity(), ImageChooser, FileChooser {
         }
         onSelect = null
         onImageSelect = null
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId) {
+            android.R.id.home -> {
+                onBackPressed()
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     companion object {
