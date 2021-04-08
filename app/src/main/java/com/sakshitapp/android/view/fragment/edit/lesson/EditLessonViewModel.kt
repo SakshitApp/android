@@ -1,11 +1,13 @@
 package com.sakshitapp.android.view.fragment.edit.lesson
 
+import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.storage.FirebaseStorage
+import com.sakshitapp.android.util.getFilename
 import com.sakshitapp.shared.model.*
 import com.sakshitapp.shared.repository.CourseRepository
 import kotlinx.coroutines.cancel
@@ -29,10 +31,10 @@ class EditLessonViewModel(private val repository: CourseRepository) : ViewModel(
     fun error(): LiveData<String> = _error
     fun progress(): LiveData<Boolean> = _progress
 
-    var course: EditCourse? = null
+    var course: Course? = null
     var lessonId: String? = null
 
-    fun uploadImage(path: Uri?) {
+    fun uploadImage(context: Context, path: Uri?) {
         _data.value?.let { lesson ->
             if (path == null || path.path == null ) {
                 _error.postValue("No File Selected")
@@ -40,7 +42,8 @@ class EditLessonViewModel(private val repository: CourseRepository) : ViewModel(
             }
             _progress.postValue(true)
             val storageRef = FirebaseStorage.getInstance().reference
-            val ext = path.path!!.substring(path.path!!.lastIndexOf("."));
+            val filename = path.getFilename(context)
+            val ext = filename!!.substring(filename!!.lastIndexOf("."));
             val imagesRef = storageRef.child("images/${lesson.uuid}${ext}")
 
             val uploadTask = imagesRef.putFile(path)
@@ -123,7 +126,7 @@ class EditLessonViewModel(private val repository: CourseRepository) : ViewModel(
         }
     }
 
-    fun save(course: EditCourse) {
+    fun save(course: Course) {
         viewModelScope.launch {
             kotlin.runCatching {
                 _progress.postValue(true)
@@ -165,7 +168,10 @@ class EditLessonViewModel(private val repository: CourseRepository) : ViewModel(
     fun save(title: String?, description: String?, youtubeUrl: String?, passingQuestion: Int) {
         var ytThumb: String? = null
         val yt = if (youtubeUrl?.contains("youtube") == true) {
-            ytThumb = "https://img.youtube.com/vi/${youtubeUrl.split("?v=")[1]}/maxresdefault.jpg"
+            ytThumb = "https://img.youtube.com/vi/${youtubeUrl.split("?v=", "&")[1]}/maxresdefault.jpg"
+            youtubeUrl
+        } else if (youtubeUrl?.contains("youtu.be/") == true) {
+            ytThumb = "https://img.youtube.com/vi/${youtubeUrl.split("youtu.be/")[1]}/maxresdefault.jpg"
             youtubeUrl
         } else null
 

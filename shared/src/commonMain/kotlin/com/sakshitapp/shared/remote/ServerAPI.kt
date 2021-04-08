@@ -3,10 +3,7 @@ package com.sakshitapp.shared.remote
 import com.russhwolf.settings.Settings
 import com.sakshitapp.shared.SharedFactory
 import com.sakshitapp.shared.logMessage
-import com.sakshitapp.shared.model.Category
-import com.sakshitapp.shared.model.EditCourse
-import com.sakshitapp.shared.model.Response
-import com.sakshitapp.shared.model.User
+import com.sakshitapp.shared.model.*
 import io.ktor.client.HttpClient
 import io.ktor.client.features.*
 import io.ktor.client.features.json.JsonFeature
@@ -36,6 +33,11 @@ class ServerAPI {
 //            logger = Logger.SIMPLE
 //            level = LogLevel.ALL
 //        }
+        install(HttpTimeout) {
+            connectTimeoutMillis = 2 * 60 * 1000
+            socketTimeoutMillis = 2 * 60 * 1000
+            requestTimeoutMillis = 2 * 60 * 1000
+        }
         defaultRequest {
             header("Content-Type", ContentType.Application.Json.toString())
             header(AUTH, "Bearer ${shared.getString("token")}")
@@ -66,25 +68,51 @@ class ServerAPI {
     }
 
     @Throws(Exception::class)
-    suspend fun getDraftCourses(): Response<List<EditCourse>> {
+    suspend fun getHomeCourses(): Response<Home> {
+        logMessage("ServerAPI getHomeCourses")
+        return httpClient.get("${URL}/course")
+    }
+
+    @Throws(Exception::class)
+    suspend fun getDraftCourses(): Response<List<Course>> {
         logMessage("ServerAPI getEditableCourses")
         return httpClient.get("${URL}/course/edit")
     }
 
     @Throws(Exception::class)
-    suspend fun getNewDraftCourse(): Response<EditCourse> {
+    suspend fun getNewDraftCourse(): Response<Course> {
         logMessage("ServerAPI getNewCourse")
         return httpClient.get("${URL}/course/edit/new")
     }
 
     @Throws(Exception::class)
-    suspend fun getDraftCourse(courseId: String): Response<EditCourse> {
+    suspend fun getDraftCourse(courseId: String): Response<Course> {
         logMessage("ServerAPI getEditableCourse $courseId")
         return httpClient.get("${URL}/course/edit/$courseId")
     }
 
     @Throws(Exception::class)
-    suspend fun updateCourse(course: EditCourse): Response<EditCourse> {
+    suspend fun getCourse(courseId: String): Response<Subscription> {
+        logMessage("ServerAPI getCourse $courseId")
+        return httpClient.get("${URL}/course/$courseId")
+    }
+
+    @Throws(Exception::class)
+    suspend fun likeCourse(courseId: String): Response<Subscription> {
+        logMessage("ServerAPI likeCourse $courseId")
+        return httpClient.post("${URL}/course/like/$courseId")
+    }
+
+    @Throws(Exception::class)
+    suspend fun reviewCourse(courseId: String, review: String): Response<Course> {
+        logMessage("ServerAPI reviewCourse $courseId")
+        return httpClient.post("${URL}/course/review/$courseId") {
+            body = mapOf("review" to review)
+        }
+    }
+
+    @Throws(Exception::class)
+    suspend fun updateCourse(course: Course): Response<Course> {
         logMessage("ServerAPI updateCourse $course")
         return httpClient.post("${URL}/course/edit") {
             body = course
@@ -92,7 +120,7 @@ class ServerAPI {
     }
 
     @Throws(Exception::class)
-    suspend fun deleteCourse(course: EditCourse): Response<EditCourse> {
+    suspend fun deleteCourse(course: Course): Response<Course> {
         logMessage("ServerAPI updateCourse $course")
         return httpClient.delete("${URL}/course/edit") {
             body = course

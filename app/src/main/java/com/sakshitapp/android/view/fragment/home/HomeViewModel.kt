@@ -5,14 +5,14 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakshitapp.shared.model.CourseState
-import com.sakshitapp.shared.model.EditCourse
+import com.sakshitapp.shared.model.Course
 import com.sakshitapp.shared.repository.CourseRepository
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: CourseRepository) : ViewModel() {
 
-    private val _draft: MutableLiveData<List<EditCourse>> by lazy {
+    private val _draft: MutableLiveData<List<Course>> by lazy {
         MutableLiveData()
     }
 
@@ -28,7 +28,7 @@ class HomeViewModel(private val repository: CourseRepository) : ViewModel() {
         loadDrafts()
     }
 
-    fun getDrafts(): LiveData<List<EditCourse>> = _draft
+    fun getDrafts(): LiveData<List<Course>> = _draft
     fun error(): LiveData<String> = _error
     fun progress(): LiveData<Boolean> = _progress
 
@@ -47,7 +47,7 @@ class HomeViewModel(private val repository: CourseRepository) : ViewModel() {
         }
     }
 
-    fun delete(course: EditCourse) {
+    fun delete(course: Course) {
         viewModelScope.launch {
             kotlin.runCatching {
                 _progress.postValue(true)
@@ -67,7 +67,7 @@ class HomeViewModel(private val repository: CourseRepository) : ViewModel() {
         viewModelScope.cancel()
     }
 
-    fun changeState(course: EditCourse, state: CourseState) {
+    fun changeState(course: Course, state: CourseState) {
         viewModelScope.launch {
             kotlin.runCatching {
                 _progress.postValue(true)

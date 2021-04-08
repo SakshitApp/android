@@ -1,19 +1,24 @@
 package com.sakshitapp.android.view.fragment.edit.course
 
+import android.content.Context
+import android.database.Cursor
 import android.net.Uri
+import android.provider.OpenableColumns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.storage.FirebaseStorage
+import com.sakshitapp.android.util.getFilename
 import com.sakshitapp.shared.model.*
 import com.sakshitapp.shared.repository.CourseRepository
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
+
 class EditCourseViewModel(private val repository: CourseRepository) : ViewModel() {
 
-    private val _draft: MutableLiveData<EditCourse> by lazy {
+    private val _draft: MutableLiveData<Course> by lazy {
         MutableLiveData()
     }
 
@@ -25,11 +30,11 @@ class EditCourseViewModel(private val repository: CourseRepository) : ViewModel(
         MutableLiveData()
     }
 
-    fun getDraft(): LiveData<EditCourse> = _draft
+    fun getDraft(): LiveData<Course> = _draft
     fun error(): LiveData<String> = _error
     fun progress(): LiveData<Boolean> = _progress
 
-    fun uploadImage(path: Uri?) {
+    fun uploadImage(context: Context, path: Uri?) {
         _draft.value?.let { course ->
             if (path == null || path.path == null ) {
                 _error.postValue("No File Selected")
@@ -37,7 +42,8 @@ class EditCourseViewModel(private val repository: CourseRepository) : ViewModel(
             }
             _progress.postValue(true)
             val storageRef = FirebaseStorage.getInstance().reference
-            val ext = path.path!!.substring(path.path!!.lastIndexOf("."));
+            val filename = path.getFilename(context)
+            val ext = filename!!.substring(filename!!.lastIndexOf("."));
             val imagesRef = storageRef.child("images/${course.uuid}${ext}")
 
             val uploadTask = imagesRef.putFile(path)
@@ -77,7 +83,7 @@ class EditCourseViewModel(private val repository: CourseRepository) : ViewModel(
         }
     }
 
-    fun save(course: EditCourse) {
+    fun save(course: Course) {
         viewModelScope.launch {
             kotlin.runCatching {
                 _progress.postValue(true)

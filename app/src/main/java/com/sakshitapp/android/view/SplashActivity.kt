@@ -12,6 +12,7 @@ import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ActivityLauncherBinding
 import com.sakshitapp.android.viewmodel.SplashViewModel
 import com.sakshitapp.android.viewmodel.ViewModelFactory
+import com.sakshitapp.shared.model.Role
 
 
 class SplashActivity : AppCompatActivity() {
@@ -39,9 +40,14 @@ class SplashActivity : AppCompatActivity() {
                 user.uuid.isEmpty() -> {
                     binding.navHostFragmentActivityUser.visibility = View.VISIBLE
                 }
-                user.role != null -> {
-                    startActivity(Intent(this, MainActivity::class.java))
-                    finish()
+                user.role != null && user.role!!.isNotEmpty() -> {
+                    if (user.role!![0] == Role.USER_STUDENT) {
+                        startActivity(Intent(this, MainStudentActivity::class.java))
+                        finish()
+                    } else {
+                        startActivity(Intent(this, MainActivity::class.java))
+                        finish()
+                    }
                 }
                 else -> {
                     val navOptions = NavOptions.Builder()

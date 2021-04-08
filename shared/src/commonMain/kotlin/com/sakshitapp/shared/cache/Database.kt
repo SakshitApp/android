@@ -1,14 +1,16 @@
 package com.sakshitapp.shared.cache
 
+import com.sakshitapp.shared.model.Course
 import com.sakshitapp.shared.model.CourseState
-import com.sakshitapp.shared.model.CourseType
 import com.sakshitapp.shared.model.Role
+import com.sakshitapp.shared.model.Subscription
 import com.squareup.sqldelight.db.SqlDriver
 import kotlinx.serialization.json.Json
 
 internal class Database(driver: SqlDriver){
     private val database = AppDatabase(driver)
     private val dbQuery = database.appDatabaseQueries
+    private val json = Json { ignoreUnknownKeys = true }
 
     internal fun clearDatabase() {
         dbQuery.transaction {
@@ -68,34 +70,46 @@ internal class Database(driver: SqlDriver){
         dbQuery.removeAllCourse()
     }
 
-    internal fun deleteCourse(course: com.sakshitapp.shared.model.EditCourse?) {
+    internal fun deleteCourse(course: Course?) {
         course?.let { dbQuery.removeCourse(it.uuid) }
     }
 
-    internal fun getCourse(id: String): com.sakshitapp.shared.model.EditCourse? {
-        return dbQuery.selectCourse(id, ::mapCourse).executeAsOneOrNull()
+    internal fun deleteSubscriptionCourse(course: Subscription?) {
+        course?.let { dbQuery.removeCourse(course.courseId) }
     }
 
-    internal fun getCourses(): List<com.sakshitapp.shared.model.EditCourse> {
-        return dbQuery.selectCourses(::mapCourse).executeAsList()
+    internal fun getCourse(id: String): Course? {
+        return dbQuery.selectCourseForOtherState(id, CourseState.SUBSCRIBED.name, ::mapCourse).executeAsOneOrNull()
+    }
+
+    internal fun getCourses(): List<Course> {
+        return dbQuery.selectCoursesForOtherState(CourseState.SUBSCRIBED.name, ::mapCourse).executeAsList()
     }
 
     private fun mapCourse(
         uuid: String,
-        json: String?,
+        jsonString: String?,
         state: String?
-    ): com.sakshitapp.shared.model.EditCourse {
-        return Json.decodeFromString(com.sakshitapp.shared.model.EditCourse.serializer(), json?: "")
+    ): com.sakshitapp.shared.model.Course {
+        return json.decodeFromString(com.sakshitapp.shared.model.Course.serializer(), jsonString?: "")
     }
 
-    internal fun createCourses(course: List<com.sakshitapp.shared.model.EditCourse>?) {
+    internal fun createCourses(course: List<Course>?) {
         dbQuery.transaction {
             course?.forEach {
                 insertCourse(it)
             }
         }
     }
-    internal fun createCourse(course: com.sakshitapp.shared.model.EditCourse?) {
+
+    internal fun createSCourses(course: List<Subscription>?) {
+        dbQuery.transaction {
+            course?.forEach {
+                insertCourse(it)
+            }
+        }
+    }
+    internal fun createCourse(course: Course?) {
         dbQuery.transaction {
             course?.let {
                 deleteCourse(course)
@@ -111,11 +125,43 @@ internal class Database(driver: SqlDriver){
         }
     }
 
-    private fun insertCourse(course: com.sakshitapp.shared.model.EditCourse) {
+    private fun insertCourse(course: Course) {
         dbQuery.insertCourse(
             uuid = course.uuid,
-            json = Json.encodeToString(com.sakshitapp.shared.model.EditCourse.serializer(), course),
+            json = json.encodeToString(com.sakshitapp.shared.model.Course.serializer(), course),
             state = course.state.name
+        )
+    }
+
+    internal fun getSubscribedCourses(): List<Subscription> {
+        return dbQuery.selectCoursesForState(CourseState.SUBSCRIBED.name, ::mapSubscribedCourse).executeAsList()
+    }
+
+    private fun mapSubscribedCourse(
+        uuid: String,
+        jsonString: String?,
+        state: String?
+    ): com.sakshitapp.shared.model.Subscription {
+        return json.decodeFromString(com.sakshitapp.shared.model.Subscription.serializer(), jsonString?: "")
+    }
+
+    internal fun getSubscriptionCourse(id: String): Subscription? {
+        return dbQuery.selectCourseForState(id, CourseState.SUBSCRIBED.name, ::mapSubscribedCourse).executeAsOneOrNull()
+    }
+
+    internal fun createCourse(course: Subscription?) {
+        dbQuery.transaction {
+            course?.let {
+                insertCourse(it)
+            }
+        }
+    }
+
+    private fun insertCourse(course: Subscription) {
+        dbQuery.insertCourse(
+            uuid = course.courseId,
+            json = json.encodeToString(com.sakshitapp.shared.model.Subscription.serializer(), course),
+            state = CourseState.SUBSCRIBED.name
         )
     }
 

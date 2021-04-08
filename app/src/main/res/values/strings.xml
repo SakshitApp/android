@@ -141,4 +141,16 @@
     <string name="option_1">Option 1</string>
     <string name="correct_answer_header">Correct Answer:</string>
     <string name="empty_state">empty</string>
+    <string name="title_activity_main_student">MainActivity</string>
+    <string name="my_course">My Courses</string>
+    <string name="all">All</string>
+    <string name="my_course_sub">%s (%d)</string>
+    <string name="course_sub">%s (%d) ₹ %3$,.2f</string>
+    <string name="you_may_like">You may also like</string>
+    <string name="review">Reviews</string>
+    <string name="buy_now">Buy Now</string>
+    <string name="add_your_review">Add your review</string>
+    <string name="add_review">Add Review</string>
+    <string name="add_to_cart">Add to Cart</string>
+    <string name="course_subtitle">%s at ₹ %2$,.2f</string>
 </resources>

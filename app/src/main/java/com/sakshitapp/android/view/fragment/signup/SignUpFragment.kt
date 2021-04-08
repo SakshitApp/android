@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.FragmentSignupBinding
 import com.sakshitapp.android.view.MainActivity
+import com.sakshitapp.android.view.MainStudentActivity
 import com.sakshitapp.android.viewmodel.ViewModelFactory
 import com.sakshitapp.shared.model.Role
 
@@ -65,10 +66,15 @@ class SignUpFragment: Fragment(){
                 user.uuid.isEmpty() -> {
                     Snackbar.make(binding.root, "Failed", Snackbar.LENGTH_LONG).show()
                 }
-                user.role != null -> {
+                user.role != null && user.role!!.isNotEmpty() -> {
                     activity?.apply {
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
+                        if (user.role!![0] == Role.USER_STUDENT) {
+                            startActivity(Intent(this, MainStudentActivity::class.java))
+                            finish()
+                        } else {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
                     }
                 }
                 else -> {

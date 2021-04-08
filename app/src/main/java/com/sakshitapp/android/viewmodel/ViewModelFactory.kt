@@ -3,10 +3,12 @@ package com.sakshitapp.android.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sakshitapp.android.FCMUserRepository
+import com.sakshitapp.android.view.fragment.course.CourseViewModel
 import com.sakshitapp.android.view.fragment.edit.course.EditCourseViewModel
 import com.sakshitapp.android.view.fragment.edit.lesson.EditLessonViewModel
 import com.sakshitapp.android.view.fragment.edit.question.EditQuestionViewModel
 import com.sakshitapp.android.view.fragment.home.HomeViewModel
+import com.sakshitapp.android.view.fragment.home.StudentHomeViewModel
 import com.sakshitapp.android.view.fragment.login.LoginViewModel
 import com.sakshitapp.android.view.fragment.roles.RoleViewModel
 import com.sakshitapp.android.view.fragment.signup.SignUpViewModel
@@ -25,7 +27,11 @@ class ViewModelFactory : ViewModelProvider.Factory {
             || modelClass == EditCourseViewModel::class.java
             || modelClass == EditLessonViewModel::class.java
             || modelClass == EditQuestionViewModel::class.java
+            || modelClass == StudentHomeViewModel::class.java
         ) {
+            return modelClass.getConstructor(CourseRepository::class.java)
+                .newInstance(CourseRepository()) as T
+        } else if (modelClass == CourseViewModel::class.java) {
             return modelClass.getConstructor(CourseRepository::class.java)
                 .newInstance(CourseRepository()) as T
         }

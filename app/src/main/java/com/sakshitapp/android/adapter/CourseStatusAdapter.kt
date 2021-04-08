@@ -3,21 +3,23 @@ package com.sakshitapp.android.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ListItemEmptyBinding
 import com.sakshitapp.android.databinding.ListItemStatusBinding
 import com.sakshitapp.shared.model.CourseState
-import com.sakshitapp.shared.model.EditCourse
+import com.sakshitapp.shared.model.Course
 
 class CourseStatusAdapter(private val listener: Callback) :
-    ListAdapter<EditCourse, CourseStatusAdapter.ViewHolder>(CourseStatusDiffUtil()) {
+    ListAdapter<Course, CourseStatusAdapter.ViewHolder>(CourseStatusDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return /*if (viewType == 0)*/ DraftViewHolder(
@@ -45,7 +47,7 @@ class CourseStatusAdapter(private val listener: Callback) :
     open class ViewHolder(
         view: View
     ) : RecyclerView.ViewHolder(view) {
-        open fun bind(item: EditCourse?) {}
+        open fun bind(item: Course?) {}
     }
 
     class EmptyViewHolder(
@@ -57,13 +59,14 @@ class CourseStatusAdapter(private val listener: Callback) :
         private val listener: Callback
     ) : ViewHolder(binding.root) {
 
-        override fun bind(item: EditCourse?) {
+        override fun bind(item: Course?) {
             item?.let {
                 binding.apply {
                     Glide.with(root.context)
                         .load(item.image)
                         .transition(DrawableTransitionOptions.withCrossFade())
                         .fallback(R.drawable.ic_baseline_image_24)
+                        .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(16)))
                         .into(image)
                     title.text = item.title ?: "<title>"
                     summery.text = item.summery ?: "<summery>"
@@ -113,20 +116,20 @@ class CourseStatusAdapter(private val listener: Callback) :
         }
     }
 
-    internal class CourseStatusDiffUtil : DiffUtil.ItemCallback<EditCourse>() {
-        override fun areItemsTheSame(oldItem: EditCourse, newItem: EditCourse): Boolean {
+    internal class CourseStatusDiffUtil : DiffUtil.ItemCallback<Course>() {
+        override fun areItemsTheSame(oldItem: Course, newItem: Course): Boolean {
             return oldItem.uuid == newItem.uuid
         }
 
-        override fun areContentsTheSame(oldItem: EditCourse, newItem: EditCourse): Boolean {
+        override fun areContentsTheSame(oldItem: Course, newItem: Course): Boolean {
             return oldItem == newItem
         }
 
     }
 
     interface Callback {
-        fun onClick(course: EditCourse)
-        fun onDelete(course: EditCourse)
-        fun onStateChange(course: EditCourse, state: CourseState)
+        fun onClick(course: Course)
+        fun onDelete(course: Course)
+        fun onStateChange(course: Course, state: CourseState)
     }
 }

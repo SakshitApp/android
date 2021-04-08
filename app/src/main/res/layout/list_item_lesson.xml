@@ -2,14 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.google.android.material.card.MaterialCardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
         app:cardCornerRadius="8dp"
-        android:elevation="4dp">
+        android:layout_margin="4dp"
+        app:elevation="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -35,58 +33,36 @@
                 android:layout_marginEnd="8dp"
                 android:textStyle="bold"
                 android:maxLines="2"
-                app:layout_constraintEnd_toStartOf="@+id/delete"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/image"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/summery"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:maxLines="2"
-                app:layout_constraintEnd_toStartOf="@+id/delete"
-                app:layout_constraintTop_toBottomOf="@+id/title"
-                app:layout_constraintStart_toEndOf="@+id/image"/>
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/stats"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:maxLines="2"
-                app:layout_constraintEnd_toStartOf="@+id/delete"
-                app:layout_constraintTop_toBottomOf="@+id/summery"
+                android:textSize="16sp"
                 app:layout_constraintStart_toEndOf="@+id/image"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/activate"
-                android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:background="@android:color/transparent"
-                android:tint="@android:color/holo_green_dark"
-                android:src="@android:drawable/ic_lock_power_off"
-                android:visibility="gone"
+                app:layout_constraintEnd_toStartOf="@+id/icon"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@+id/delete"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                />
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/delete"
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/subtitle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:maxLines="2"
+                app:layout_constraintStart_toEndOf="@+id/image"
+                app:layout_constraintEnd_toStartOf="@+id/icon"
+                app:layout_constraintTop_toBottomOf="@+id/title"
+                />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/icon"
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:background="@android:color/transparent"
-                android:tint="@color/purple_700"
-                android:src="@drawable/ic_baseline_delete_24"
-                app:layout_constraintTop_toBottomOf="@+id/activate"
+                android:tint="@color/black"
+                android:src="@android:drawable/ic_lock_idle_lock"
+                app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </com.google.android.material.card.MaterialCardView>
+    </androidx.cardview.widget.CardView>
 </layout>

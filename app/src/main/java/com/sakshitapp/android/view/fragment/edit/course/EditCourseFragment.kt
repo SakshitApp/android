@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -61,7 +62,7 @@ class EditCourseFragment : Fragment() {
         binding.changeImage.setOnClickListener {
             (activity as? ImageChooser)?.let {
                 it.selectImage {
-                    viewModel.uploadImage(it)
+                    viewModel.uploadImage(requireContext(), it)
                 }
             }
         }

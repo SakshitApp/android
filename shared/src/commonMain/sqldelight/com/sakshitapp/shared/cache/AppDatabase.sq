@@ -43,14 +43,17 @@ DELETE FROM Course;
 removeCourse:
 DELETE FROM Course WHERE uuid = ?;
 
-selectCourse:
-SELECT * FROM Course WHERE uuid = ? LIMIT 1;
-
 selectCourseForState:
+SELECT * FROM Course WHERE uuid = ? AND state = ? LIMIT 1;
+
+selectCourseForOtherState:
+SELECT * FROM Course WHERE uuid = ? AND state = ? LIMIT 1;
+
+selectCoursesForState:
 SELECT * FROM Course WHERE state = ?;
 
-selectCourses:
-SELECT * FROM Course;
+selectCoursesForOtherState:
+SELECT * FROM Course WHERE state != ?;
 
 insertLanguage:
 INSERT INTO Language(uuid, name)

@@ -3,9 +3,10 @@ package com.sakshitapp.shared.model
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class EditCourse(
+data class Course(
     val uuid: String,
     val user: String? = null,
+    val userName: String? = null,
     val title: String? = null,
     val image: String? = null,
     val summery: String? = null,

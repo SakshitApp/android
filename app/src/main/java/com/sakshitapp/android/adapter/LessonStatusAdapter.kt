@@ -7,7 +7,10 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
+import com.bumptech.glide.request.RequestOptions
 import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ListItemAddLessonBinding
 import com.sakshitapp.android.databinding.ListItemStatusBinding
@@ -62,6 +65,7 @@ class LessonStatusAdapter(private val listener: Callback) :
                     .load(item?.image)
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .fallback(R.drawable.ic_baseline_image_24)
+                    .apply(RequestOptions().transform(CenterCrop(), RoundedCorners(16)))
                     .into(image)
                 title.text = item?.title ?: "<title>"
                 summery.text = item?.description ?: "<summery>"

@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.sakshitapp.shared.model.EditCourse
+import com.sakshitapp.shared.model.Course
 import com.sakshitapp.shared.model.Lesson
 import com.sakshitapp.shared.model.Question
 import com.sakshitapp.shared.repository.CourseRepository
@@ -29,7 +29,7 @@ class EditQuestionViewModel(private val repository: CourseRepository) : ViewMode
     fun error(): LiveData<String> = _error
     fun progress(): LiveData<Boolean> = _progress
 
-    private var course: EditCourse? = null
+    private var course: Course? = null
     private var lessonId: String? = null
     private var questionId: String? = null
 
@@ -70,7 +70,7 @@ class EditQuestionViewModel(private val repository: CourseRepository) : ViewMode
         }
     }
 
-    fun save(course: EditCourse) {
+    fun save(course: Course) {
         viewModelScope.launch {
             kotlin.runCatching {
                 _progress.postValue(true)

@@ -12,6 +12,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.Navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.google.android.material.snackbar.Snackbar
 import com.sakshitapp.android.R
@@ -56,7 +57,7 @@ class EditLessonFragment : Fragment() {
         binding.changeImage.setOnClickListener {
             (activity as? ImageChooser)?.let {
                 it.selectImage {
-                    viewModel.uploadImage(it)
+                    viewModel.uploadImage(requireContext(), it)
                 }
             }
         }
@@ -88,7 +89,7 @@ class EditLessonFragment : Fragment() {
                     .into(coverImage)
                 title.editText?.setText(lesson.title)
                 description.editText?.setText(lesson.description)
-                youtubeUrl.editText?.setText(if (lesson.content?.contains("youtube.com") == true) lesson.content else null)
+                youtubeUrl.editText?.setText(if (lesson.content?.contains("youtube.com") == true || lesson.content?.contains("youtu.be") == true) lesson.content else null)
 
                 questionAdapter.submitList(lesson.question)
                 val ad: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -100,7 +101,9 @@ class EditLessonFragment : Fragment() {
                     android.R.layout.simple_spinner_dropdown_item
                 )
                 passingQuestions.adapter = ad
-                passingQuestions.setSelection(lesson.passingQuestion)
+                if (lesson.passingQuestion < lesson.question.size) {
+                    passingQuestions.setSelection(lesson.passingQuestion)
+                }
             }
         })
         viewModel.error().observe(viewLifecycleOwner, {

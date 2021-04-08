@@ -15,6 +15,7 @@ import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.FragmentRoleBinding
 import com.sakshitapp.android.databinding.FragmentSignupBinding
 import com.sakshitapp.android.view.MainActivity
+import com.sakshitapp.android.view.MainStudentActivity
 import com.sakshitapp.android.view.fragment.signup.SignUpViewModel
 import com.sakshitapp.android.viewmodel.ViewModelFactory
 import com.sakshitapp.shared.model.Role
@@ -52,10 +53,15 @@ class RoleFragment: BottomSheetDialogFragment() {
                 user.uuid.isEmpty() -> {
                     Snackbar.make(binding.root, "Failed", Snackbar.LENGTH_LONG).show()
                 }
-                else -> {
+                user.role != null && user.role!!.isNotEmpty() -> {
                     activity?.apply {
-                        startActivity(Intent(this, MainActivity::class.java))
-                        finish()
+                        if (user.role!![0] == Role.USER_STUDENT) {
+                            startActivity(Intent(this, MainStudentActivity::class.java))
+                            finish()
+                        } else {
+                            startActivity(Intent(this, MainActivity::class.java))
+                            finish()
+                        }
                     }
                 }
             }
