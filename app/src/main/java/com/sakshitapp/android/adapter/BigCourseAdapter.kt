@@ -31,7 +31,7 @@ class BigCourseAdapter(private val showSmall: Boolean = true, private val listen
             layout.root.layoutParams = ViewGroup.LayoutParams(
                 TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP,
-                    128f,
+                    258f,
                     parent.context.resources.displayMetrics
                 ).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT
             )

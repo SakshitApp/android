@@ -22,22 +22,14 @@ class CourseStatusAdapter(private val listener: Callback) :
     ListAdapter<Course, CourseStatusAdapter.ViewHolder>(CourseStatusDiffUtil()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return /*if (viewType == 0)*/ DraftViewHolder(
+        return DraftViewHolder(
             ListItemStatusBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
             ),
             listener
-        )// else {
-//            EmptyViewHolder(
-//                ListItemEmptyBinding.inflate(
-//                    LayoutInflater.from(parent.context),
-//                    parent,
-//                    false
-//                )
-//            )
-//        }
+        )
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {

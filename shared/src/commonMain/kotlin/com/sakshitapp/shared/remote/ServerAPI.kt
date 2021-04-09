@@ -12,10 +12,10 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
 
-class ServerAPI {
+open class ServerAPI {
 
     companion object {
-        private const val URL = "https://powerful-badlands-26832.herokuapp.com"
+        public const val URL = "https://powerful-badlands-26832.herokuapp.com"
         private const val AUTH = "Authorization"
     }
 
@@ -24,7 +24,7 @@ class ServerAPI {
         SharedFactory.getInstance().preference()
     }
 
-    private val httpClient = HttpClient {
+    protected val httpClient = HttpClient {
         install(JsonFeature) {
             val json = Json { ignoreUnknownKeys = true }
             serializer = KotlinxSerializer(json)

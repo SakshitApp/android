@@ -9,13 +9,17 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ActivityMainBinding
 import com.sakshitapp.android.databinding.ActivityMainStudentBinding
 
-class MainStudentActivity: AppCompatActivity() {
+class MainStudentActivity: AppCompatActivity(), PaymentResultWithDataListener {
 
     private lateinit var binding: ActivityMainStudentBinding
+
+    var payListener: PaymentResultWithDataListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,7 +34,7 @@ class MainStudentActivity: AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications
+                R.id.navigation_home, R.id.navigation_dashboard, R.id.navigation_notifications, R.id.navigation_cart
             )
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -38,6 +42,7 @@ class MainStudentActivity: AppCompatActivity() {
                 R.id.navigation_home -> showBottomNav()
                 R.id.navigation_dashboard -> showBottomNav()
                 R.id.navigation_notifications -> showBottomNav()
+                R.id.navigation_cart -> showBottomNav()
                 else -> hideBottomNav()
             }
         }
@@ -63,5 +68,12 @@ class MainStudentActivity: AppCompatActivity() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        payListener?.onPaymentSuccess(p0, p1)
+    }
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        payListener?.onPaymentError(p0, p1, p2)
     }
 }

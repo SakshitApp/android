@@ -153,4 +153,6 @@
     <string name="add_review">Add Review</string>
     <string name="add_to_cart">Add to Cart</string>
     <string name="course_subtitle">%s at ₹ %2$,.2f</string>
+    <string name="title_cart">Cart</string>
+    <string name="title_course">Course</string>
 </resources>

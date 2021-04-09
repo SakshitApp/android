@@ -7,6 +7,9 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization'
 }
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
@@ -19,6 +22,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        buildConfigField "String", "RAZORPAY_KEY", "\"${localProperties['razorpay_key']}\""
     }
 
     buildTypes {
@@ -66,4 +70,5 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0'
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
+    implementation 'com.razorpay:checkout:1.6.6'
 }

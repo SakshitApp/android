@@ -29,9 +29,15 @@
     <fragment
         android:id="@+id/courseFragment"
         android:name="com.sakshitapp.android.view.fragment.course.CourseFragment"
-        android:label="CourseFragment" >
+        android:label="@string/title_course" >
         <argument
             android:name="courseId"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/navigation_cart"
+        android:name="com.sakshitapp.android.view.fragment.cart.CartFragment"
+        android:label="@string/title_cart"
+        tools:layout="@layout/fragment_cart"/>
 </navigation>

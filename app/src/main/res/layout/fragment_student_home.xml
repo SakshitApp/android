@@ -38,7 +38,6 @@
             android:id="@+id/subscribed_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -53,7 +52,6 @@
             android:id="@+id/course_rv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 

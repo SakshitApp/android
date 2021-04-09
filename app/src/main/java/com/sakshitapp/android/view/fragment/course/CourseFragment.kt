@@ -62,6 +62,9 @@ class CourseFragment : Fragment() {
         binding.likeBtn.setOnClickListener {
             viewModel.like()
         }
+        binding.buyNow.setOnClickListener {
+            viewModel.addToCart()
+        }
         return root
     }
 

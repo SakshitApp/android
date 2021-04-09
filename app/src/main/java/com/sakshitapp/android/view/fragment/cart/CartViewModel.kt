@@ -1,20 +1,23 @@
-package com.sakshitapp.android.view.fragment.course
+package com.sakshitapp.android.view.fragment.cart
 
-import android.net.Uri
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.storage.FirebaseStorage
-import com.sakshitapp.shared.model.*
+import com.sakshitapp.shared.model.Cart
+import com.sakshitapp.shared.model.RazorPayOrder
+import com.sakshitapp.shared.model.RazorPayVerify
 import com.sakshitapp.shared.repository.CartRepository
-import com.sakshitapp.shared.repository.CourseRepository
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
-class CourseViewModel(private val repository: CourseRepository, private val cartRepository: CartRepository) : ViewModel() {
+class CartViewModel(private val repository: CartRepository) : ViewModel() {
 
-    private val _data: MutableLiveData<Subscription> by lazy {
+    private val _data: MutableLiveData<List<Cart>> by lazy {
+        MutableLiveData()
+    }
+
+    private val _order: MutableLiveData<RazorPayOrder?> by lazy {
         MutableLiveData()
     }
 
@@ -26,15 +29,20 @@ class CourseViewModel(private val repository: CourseRepository, private val cart
         MutableLiveData()
     }
 
-    fun getData(): LiveData<Subscription> = _data
+    fun getData(): LiveData<List<Cart>> = _data
+    fun getOrder(): LiveData<RazorPayOrder?> = _order
     fun error(): LiveData<String> = _error
     fun progress(): LiveData<Boolean> = _progress
 
-    fun load(id: String) {
+    init {
+        load()
+    }
+
+    fun load() {
         viewModelScope.launch {
             kotlin.runCatching {
                 _progress.postValue(true)
-                repository.getCourse(id)
+                repository.getCart()
             }.onSuccess {
                 _progress.postValue(false)
                 _data.postValue(it)
@@ -45,12 +53,29 @@ class CourseViewModel(private val repository: CourseRepository, private val cart
         }
     }
 
-    fun like() {
+    fun buyNow() {
         _data.value?.let {
             viewModelScope.launch {
                 kotlin.runCatching {
                     _progress.postValue(true)
-                    repository.likeCourse(it.courseId)
+                    repository.startTransaction()
+                }.onSuccess {
+                    _progress.postValue(false)
+                    _order.postValue(it)
+                }.onFailure {
+                    _progress.postValue(false)
+                    _error.postValue(it.localizedMessage)
+                }
+            }
+        }
+    }
+
+    fun delete(course: String) {
+        _data.value?.let {
+            viewModelScope.launch {
+                kotlin.runCatching {
+                    _progress.postValue(true)
+                    repository.removeFromCart(course)
                 }.onSuccess {
                     _progress.postValue(false)
                     _data.postValue(it)
@@ -62,16 +87,12 @@ class CourseViewModel(private val repository: CourseRepository, private val cart
         }
     }
 
-    fun review(review: String?) {
-        if (review == null) {
-            _error.postValue("Review cannot be empty")
-            return
-        }
-        _data.value?.let {
+    fun verify(paymentId: String?, sig: String?) {
+        _order.value?.let {
             viewModelScope.launch {
                 kotlin.runCatching {
                     _progress.postValue(true)
-                    repository.reviewCourse(it.courseId, review)
+                    repository.endTransaction(RazorPayVerify(paymentId?:"", it.id, sig ?:""))
                 }.onSuccess {
                     _progress.postValue(false)
                     _data.postValue(it)
@@ -81,22 +102,7 @@ class CourseViewModel(private val repository: CourseRepository, private val cart
                 }
             }
         }
-    }
-
-    fun addToCart() {
-        _data.value?.let {
-            viewModelScope.launch {
-                kotlin.runCatching {
-                    _progress.postValue(true)
-                    cartRepository.addToCart(it.courseId)
-                }.onSuccess {
-                    _progress.postValue(false)
-                }.onFailure {
-                    _progress.postValue(false)
-                    _error.postValue(it.localizedMessage)
-                }
-            }
-        }
+        _order.postValue(null)
     }
 
     override fun onCleared() {
