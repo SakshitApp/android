@@ -47,7 +47,7 @@ selectCourseForState:
 SELECT * FROM Course WHERE uuid = ? AND state = ? LIMIT 1;
 
 selectCourseForOtherState:
-SELECT * FROM Course WHERE uuid = ? AND state = ? LIMIT 1;
+SELECT * FROM Course WHERE uuid = ? AND state != ? LIMIT 1;
 
 selectCoursesForState:
 SELECT * FROM Course WHERE state = ?;

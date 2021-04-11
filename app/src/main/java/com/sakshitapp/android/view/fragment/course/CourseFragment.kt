@@ -6,9 +6,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.core.view.children
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -32,12 +34,12 @@ class CourseFragment : Fragment() {
     }
 
     private var _binding: FragmentCourseBinding? = null
-    private lateinit var lessonAdapter: LessonAdapter
     private lateinit var reviewAdapter: ReviewAdapter
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private val willEdit get() = arguments?.getBoolean("willEdit") ?: false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,11 +48,6 @@ class CourseFragment : Fragment() {
     ): View {
         _binding = FragmentCourseBinding.inflate(inflater, container, false)
         val root: View = binding.root
-        lessonAdapter = LessonAdapter(object: LessonAdapter.Callback{
-            override fun onClick(lesson: Lesson) {}
-
-        })
-        binding.lesson.adapter = lessonAdapter
         reviewAdapter = ReviewAdapter()
         binding.reviewsRv.adapter = reviewAdapter
         observe()
@@ -63,7 +60,17 @@ class CourseFragment : Fragment() {
             viewModel.like()
         }
         binding.buyNow.setOnClickListener {
-            viewModel.addToCart()
+            if (willEdit) {
+                findNavController()
+                    .navigate(R.id.action_courseFragment_to_editCourseFragment, arguments)
+            } else {
+                viewModel.addToCart()
+            }
+        }
+        if (willEdit) {
+            binding.buyNow.text = getString(R.string.edit)
+        } else {
+            binding.buyNow.text = getString(R.string.add_to_cart)
         }
         return root
     }
@@ -76,7 +83,15 @@ class CourseFragment : Fragment() {
                     .transition(DrawableTransitionOptions.withCrossFade())
                     .fallback(R.drawable.ic_baseline_image_24)
                     .into(coverImage)
+                val lessonAdapter = LessonAdapter(object: LessonAdapter.Callback{
+                    override fun onClick(lesson: Lesson) =
+                        findNavController()
+                            .navigate(R.id.action_courseFragment_to_lessonFragment, bundleOf("courseId" to arguments?.getString("courseId"), "lessonId" to lesson.uuid, "hasSeen" to (viewModel.getData().value?.progress?.contains(lesson.uuid)?:false), "isLast" to (viewModel.getData().value?.progress?.size?:0 == viewModel.getData().value?.course?.lessons?.size?:0 - 1)))
+
+                })
+                binding.lesson.adapter = lessonAdapter
                 lessonAdapter.locked = data.transactionId == null
+                lessonAdapter.progress = data.progress
                 lessonAdapter.submitList(data?.course?.lessons)
                 reviewAdapter.submitList(data?.course?.review)
                 title.text = data.course?.title
@@ -100,6 +115,7 @@ class CourseFragment : Fragment() {
                     addChipToView(it.name ?:"",languageRv)
                 }
                 review.editText?.text = null
+                binding.buyNow.visibility = if (data.transactionId == null) View.VISIBLE else View.GONE
             }
         })
         viewModel.error().observe(viewLifecycleOwner, {
@@ -115,6 +131,10 @@ class CourseFragment : Fragment() {
             }
             binding.loading.visibility = if (it) View.VISIBLE else View.INVISIBLE
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
         arguments?.getString("courseId")?.let {
             viewModel.load(it)
         }

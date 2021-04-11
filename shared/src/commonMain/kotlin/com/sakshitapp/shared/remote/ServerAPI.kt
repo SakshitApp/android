@@ -104,6 +104,14 @@ open class ServerAPI {
     }
 
     @Throws(Exception::class)
+    suspend fun lessonCompleted(courseId: String, data: Map<String, String>): Response<Subscription> {
+        logMessage("ServerAPI lessonCompleted $courseId $data")
+        return httpClient.post("${URL}/course/done/$courseId") {
+            body = data
+        }
+    }
+
+    @Throws(Exception::class)
     suspend fun reviewCourse(courseId: String, review: String): Response<Course> {
         logMessage("ServerAPI reviewCourse $courseId")
         return httpClient.post("${URL}/course/review/$courseId") {

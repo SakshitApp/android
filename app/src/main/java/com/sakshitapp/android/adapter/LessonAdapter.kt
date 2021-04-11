@@ -19,6 +19,7 @@ class LessonAdapter(private val listener: Callback) :
     ListAdapter<Lesson, LessonAdapter.ViewHolder>(MyDiffUtil()) {
 
     var locked: Boolean = true
+    var progress = emptyList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -28,6 +29,7 @@ class LessonAdapter(private val listener: Callback) :
                 false
             ),
             locked,
+            progress,
             listener
         )
     }
@@ -39,6 +41,7 @@ class LessonAdapter(private val listener: Callback) :
     class ViewHolder(
         private val binding: ListItemLessonBinding,
         private val locked: Boolean,
+        private val progress: List<String>,
         private val listener: Callback
     ) : RecyclerView.ViewHolder(binding.root) {
 
@@ -52,16 +55,22 @@ class LessonAdapter(private val listener: Callback) :
                     .into(image)
                 title.text = item.title ?: ""
                 subtitle.text = item.description
+
+                if (progress.contains(item.uuid)) {
+                    card.backgroundTintList = ContextCompat.getColorStateList(root.context, R.color.purple_100)
+                    title.setTextColor(ContextCompat.getColor(root.context, R.color.purple_700))
+                    subtitle.setTextColor(ContextCompat.getColor(root.context, R.color.purple_700))
+                    icon.imageTintList = ContextCompat.getColorStateList(root.context, R.color.purple_700)
+                }
+
                 if (locked) {
                     icon.setImageResource(android.R.drawable.ic_lock_idle_lock)
-                    icon.imageTintList = ContextCompat.getColorStateList(root.context, R.color.black_overlay)
+                    root.setOnClickListener {}
+                } else {
+                    icon.setImageResource(android.R.drawable.ic_media_play)
                     root.setOnClickListener {
                         listener.onClick(item)
                     }
-                } else {
-                    icon.setImageResource(android.R.drawable.ic_media_play)
-                    icon.imageTintList = ContextCompat.getColorStateList(root.context, R.color.black_overlay)
-                    root.setOnClickListener {}
                 }
             }
         }

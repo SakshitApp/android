@@ -103,6 +103,10 @@ class CourseStatusAdapter(private val listener: Callback) :
                             }
                         }
                     }
+                    edit.visibility = View.VISIBLE
+                    edit.setOnClickListener {
+                        listener.onEdit(item)
+                    }
                 }
             }
         }
@@ -121,6 +125,7 @@ class CourseStatusAdapter(private val listener: Callback) :
 
     interface Callback {
         fun onClick(course: Course)
+        fun onEdit(course: Course)
         fun onDelete(course: Course)
         fun onStateChange(course: Course, state: CourseState)
     }

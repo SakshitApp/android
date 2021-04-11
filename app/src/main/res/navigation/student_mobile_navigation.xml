@@ -33,6 +33,83 @@
         <argument
             android:name="courseId"
             app:argType="string" />
+        <action
+            android:id="@+id/action_courseFragment_to_lessonFragment"
+            app:destination="@id/lessonFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/lessonFragment"
+        android:name="com.sakshitapp.android.view.fragment.lesson.LessonFragment"
+        android:label="@string/title_lesson"
+        tools:layout="@layout/fragment_lesson">
+        <argument
+            android:name="courseId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lessonId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="hasSeen"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="isLast"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_lessonFragment_to_quizFragment"
+            app:destination="@id/quizFragment" />
+        <action
+            android:id="@+id/action_lessonFragment_to_congratulationFragment"
+            app:destination="@id/congratulationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/quizFragment"
+        android:name="com.sakshitapp.android.view.fragment.quiz.QuizFragment"
+        android:label="@string/quiz"
+        tools:layout="@layout/fragment_quiz">
+        <argument
+            android:name="courseId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lessonId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="isLast"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <action
+            android:id="@+id/action_quizFragment_to_congratulationFragment"
+            app:destination="@id/congratulationFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/congratulationFragment"
+        android:name="com.sakshitapp.android.view.fragment.congratulation.CongratulationFragment"
+        android:label="@string/result"
+        tools:layout="@layout/fragment_congratulations">
+        <argument
+            android:name="courseId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="lessonId"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="hasPassed"
+            android:defaultValue="false"
+            app:argType="boolean" />
+        <argument
+            android:name="isLast"
+            android:defaultValue="false"
+            app:argType="boolean" />
     </fragment>
 
     <fragment

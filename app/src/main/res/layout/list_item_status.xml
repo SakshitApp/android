@@ -74,6 +74,18 @@
                 android:src="@android:drawable/ic_lock_power_off"
                 android:visibility="gone"
                 app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/edit"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/edit"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:background="@android:color/transparent"
+                android:src="@drawable/ic_baseline_edit_24"
+                android:tint="@color/purple_700"
+                android:visibility="gone"
+                app:layout_constraintTop_toBottomOf="@+id/activate"
                 app:layout_constraintBottom_toTopOf="@+id/delete"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
@@ -84,7 +96,7 @@
                 android:background="@android:color/transparent"
                 android:tint="@color/purple_700"
                 android:src="@drawable/ic_baseline_delete_24"
-                app:layout_constraintTop_toBottomOf="@+id/activate"
+                app:layout_constraintTop_toBottomOf="@+id/edit"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 

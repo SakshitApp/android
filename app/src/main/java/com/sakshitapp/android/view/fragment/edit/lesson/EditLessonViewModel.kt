@@ -133,6 +133,7 @@ class EditLessonViewModel(private val repository: CourseRepository) : ViewModel(
                 repository.updateDraft(course)
             }.onSuccess {
                 _progress.postValue(false)
+                this@EditLessonViewModel.course = it
                 if (lessonId != null) {
                     _data.postValue(it.lessons.filter { it.uuid == lessonId }.firstOrNull())
                 } else {

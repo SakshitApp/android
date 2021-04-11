@@ -155,4 +155,20 @@
     <string name="course_subtitle">%s at ₹ %2$,.2f</string>
     <string name="title_cart">Cart</string>
     <string name="title_course">Course</string>
+    <string name="edit">Edit</string>
+    <string name="title_lesson">Lesson</string>
+    <string name="title_edit_question">Edit Question</string>
+    <string name="title_edit_lesson">Edit Lesson</string>
+    <string name="title_edit_course">Edit Course</string>
+    <string name="done">Done</string>
+    <string name="quiz">Quiz</string>
+    <string name="skip">Skip</string>
+    <string name="question_format">Question %d. %s</string>
+    <string name="retry">Retry</string>
+    <string name="loading">loading...</string>
+    <string name="course_complete_status">Congratulation!\nYou have completed the course</string>
+    <string name="lesson_complete_status">Congratulations!\nYou have completed the lesson</string>
+    <string name="lesson_failed_status">You have failed the quiz</string>
+    <string name="result">Result</string>
+    <string name="close">Close</string>
 </resources>

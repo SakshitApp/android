@@ -4,13 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sakshitapp.android.FCMUserRepository
 import com.sakshitapp.android.view.fragment.cart.CartViewModel
+import com.sakshitapp.android.view.fragment.congratulation.CongratulationViewModel
 import com.sakshitapp.android.view.fragment.course.CourseViewModel
 import com.sakshitapp.android.view.fragment.edit.course.EditCourseViewModel
 import com.sakshitapp.android.view.fragment.edit.lesson.EditLessonViewModel
 import com.sakshitapp.android.view.fragment.edit.question.EditQuestionViewModel
 import com.sakshitapp.android.view.fragment.home.HomeViewModel
 import com.sakshitapp.android.view.fragment.home.StudentHomeViewModel
+import com.sakshitapp.android.view.fragment.lesson.LessonViewModel
 import com.sakshitapp.android.view.fragment.login.LoginViewModel
+import com.sakshitapp.android.view.fragment.quiz.QuizViewModel
 import com.sakshitapp.android.view.fragment.roles.RoleViewModel
 import com.sakshitapp.android.view.fragment.signup.SignUpViewModel
 import com.sakshitapp.shared.repository.CartRepository
@@ -30,6 +33,9 @@ class ViewModelFactory : ViewModelProvider.Factory {
             || modelClass == EditLessonViewModel::class.java
             || modelClass == EditQuestionViewModel::class.java
             || modelClass == StudentHomeViewModel::class.java
+            || modelClass == LessonViewModel::class.java
+            || modelClass == QuizViewModel::class.java
+            || modelClass == CongratulationViewModel::class.java
         ) {
             return modelClass.getConstructor(CourseRepository::class.java)
                 .newInstance(CourseRepository()) as T

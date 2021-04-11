@@ -38,6 +38,9 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
         adapter = CourseStatusAdapter(object: CourseStatusAdapter.Callback{
             override fun onClick(course: Course) = findNavController()
+                .navigate(R.id.action_navigation_home_to_courseFragment, bundleOf("courseId" to course.uuid, "willEdit" to true))
+
+            override fun onEdit(course: Course) = findNavController()
                 .navigate(R.id.action_navigation_home_to_editCourseFragment, bundleOf("courseId" to course.uuid))
 
             override fun onDelete(course: Course) = viewModel.delete(course)

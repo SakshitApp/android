@@ -45,6 +45,8 @@ class CourseViewModel(private val repository: CourseRepository, private val cart
         }
     }
 
+    val isTeacher = repository.isTeacher
+
     fun like() {
         _data.value?.let {
             viewModelScope.launch {

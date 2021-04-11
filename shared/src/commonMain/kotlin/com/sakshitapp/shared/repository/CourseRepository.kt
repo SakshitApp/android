@@ -1,6 +1,7 @@
 package com.sakshitapp.shared.repository
 
 import com.russhwolf.settings.Settings
+import com.russhwolf.settings.get
 import com.sakshitapp.shared.SharedFactory
 import com.sakshitapp.shared.cache.Database
 import com.sakshitapp.shared.logMessage
@@ -20,13 +21,19 @@ class CourseRepository {
         SharedFactory.getInstance().preference()
     }
 
+    val isTeacher : Boolean = shared.getBoolean("isTeacher", false)
+
     @Throws(Exception::class)
     suspend fun getCourses(forceReload: Boolean): List<Course> {
         logMessage("CourseRepository getCourses $forceReload")
         val cached = database.getCourses()
-        return if (cached != null && !forceReload) {
-            logMessage("CourseRepository getCourses cached $cached")
-            sortCourses(cached)
+        val subCached = database.getSubscribedCourses()
+        return if ((cached != null || subCached != null) && !forceReload) {
+            logMessage("CourseRepository getCourses cached $cached $subCached")
+            sortCourses(arrayListOf<Course>().apply{
+                addAll(cached)
+                addAll(subCached.mapNotNull { it.course })
+            })
         } else {
             api.getDraftCourses().let { response ->
                 logMessage("CourseRepository getCourses response $response")
@@ -134,6 +141,20 @@ class CourseRepository {
         api.likeCourse(id)
             .let { response ->
                 logMessage("CourseRepository likeCourse response $response")
+                return response.data?.let { data ->
+                    database.deleteSubscriptionCourse(data)
+                    database.createCourse(data)
+                    data
+                } ?: throw Exception("Not Found")
+            }
+    }
+
+    @Throws(Exception::class)
+    suspend fun lessonCompleted(id: String, lesson: String): Subscription {
+        logMessage("CourseRepository lessonCompleted $id $lesson")
+        api.lessonCompleted(id, mapOf("lesson" to lesson))
+            .let { response ->
+                logMessage("CourseRepository lessonCompleted response $response")
                 return response.data?.let { data ->
                     database.deleteSubscriptionCourse(data)
                     database.createCourse(data)

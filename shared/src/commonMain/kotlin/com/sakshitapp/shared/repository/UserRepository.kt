@@ -34,6 +34,7 @@ open class UserRepository {
                 logMessage("UserRepository getUser response $it")
                 database.clearUser()
                 database.createUser(it.data)
+                shared["isTeacher"] = it.data?.role?.lastOrNull { it == Role.USER_EXPERT } != null
                 it.data
             }
         }
@@ -46,6 +47,7 @@ open class UserRepository {
             logMessage("UserRepository updateUser response $it")
             database.clearUser()
             database.createUser(it.data)
+            shared["isTeacher"] = it.data?.role?.lastOrNull { it == Role.USER_EXPERT } != null
             it.data
         }
     }
@@ -57,6 +59,7 @@ open class UserRepository {
             logMessage("UserRepository setRole response $it")
             database.clearUser()
             database.createUser(it.data)
+            shared["isTeacher"] = it.data?.role?.lastOrNull { it == Role.USER_EXPERT } != null
             it.data
         }
     }
@@ -68,6 +71,7 @@ open class UserRepository {
             logMessage("UserRepository sendFCMToken response $it")
             database.clearUser()
             database.createUser(it.data)
+            shared["isTeacher"] = it.data?.role?.lastOrNull { it == Role.USER_EXPERT } != null
             it.data
         }
     }
