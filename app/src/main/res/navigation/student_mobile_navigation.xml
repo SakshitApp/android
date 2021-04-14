@@ -117,4 +117,13 @@
         android:name="com.sakshitapp.android.view.fragment.cart.CartFragment"
         android:label="@string/title_cart"
         tools:layout="@layout/fragment_cart"/>
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.sakshitapp.android.view.fragment.search.SearchFragment"
+        android:label="@string/title_search"
+        tools:layout="@layout/fragment_search">
+        <action
+            android:id="@+id/action_navigation_search_to_courseFragment"
+            app:destination="@id/courseFragment" />
+    </fragment>
 </navigation>

@@ -15,6 +15,7 @@ import com.sakshitapp.android.view.fragment.lesson.LessonViewModel
 import com.sakshitapp.android.view.fragment.login.LoginViewModel
 import com.sakshitapp.android.view.fragment.quiz.QuizViewModel
 import com.sakshitapp.android.view.fragment.roles.RoleViewModel
+import com.sakshitapp.android.view.fragment.search.SearchViewModel
 import com.sakshitapp.android.view.fragment.signup.SignUpViewModel
 import com.sakshitapp.shared.repository.CartRepository
 import com.sakshitapp.shared.repository.CourseRepository
@@ -36,6 +37,7 @@ class ViewModelFactory : ViewModelProvider.Factory {
             || modelClass == LessonViewModel::class.java
             || modelClass == QuizViewModel::class.java
             || modelClass == CongratulationViewModel::class.java
+            || modelClass == SearchViewModel::class.java
         ) {
             return modelClass.getConstructor(CourseRepository::class.java)
                 .newInstance(CourseRepository()) as T

@@ -24,4 +24,6 @@ data class Course(
     val state: CourseState = CourseState.DRAFT,
     val createdOn: Long? = null,
     val updatedOn: Long? = null,
-)
+) {
+    var canEdit = false
+}

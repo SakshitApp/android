@@ -8,6 +8,7 @@ import io.ktor.client.HttpClient
 import io.ktor.client.features.*
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.serialization.json.Json
@@ -29,14 +30,14 @@ open class ServerAPI {
             val json = Json { ignoreUnknownKeys = true }
             serializer = KotlinxSerializer(json)
         }
-//        install(Logging){
-//            logger = Logger.SIMPLE
-//            level = LogLevel.ALL
-//        }
+        install(Logging){
+            logger = Logger.SIMPLE
+            level = LogLevel.ALL
+        }
         install(HttpTimeout) {
-            connectTimeoutMillis = 2 * 60 * 1000
-            socketTimeoutMillis = 2 * 60 * 1000
-            requestTimeoutMillis = 2 * 60 * 1000
+            connectTimeoutMillis = 20 * 60 * 1000
+            socketTimeoutMillis = 20 * 60 * 1000
+            requestTimeoutMillis = 20 * 60 * 1000
         }
         defaultRequest {
             header("Content-Type", ContentType.Application.Json.toString())
@@ -74,7 +75,7 @@ open class ServerAPI {
     }
 
     @Throws(Exception::class)
-    suspend fun getDraftCourses(): Response<List<Course>> {
+    suspend fun getDraftCourses(): Response<Home> {
         logMessage("ServerAPI getEditableCourses")
         return httpClient.get("${URL}/course/edit")
     }
@@ -132,6 +133,14 @@ open class ServerAPI {
         logMessage("ServerAPI updateCourse $course")
         return httpClient.delete("${URL}/course/edit") {
             body = course
+        }
+    }
+
+    @Throws(Exception::class)
+    suspend fun searchCourse(data: Map<String, String>): Response<List<Course>> {
+        logMessage("ServerAPI searchCourse $data")
+        return httpClient.post("${URL}/course/search") {
+            body = data
         }
     }
 }

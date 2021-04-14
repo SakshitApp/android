@@ -38,8 +38,8 @@ kotlin {
                 implementation("io.ktor:ktor-client-core:$ktorVersion")
                 implementation("io.ktor:ktor-client-serialization:$ktorVersion")
                 implementation("com.squareup.sqldelight:runtime:$sqlDelightVersion")
-//                implementation("io.ktor:ktor-client-logging:$ktorVersion")
-//                implementation("ch.qos.logback:logback-classic:$logbackVersion")
+                implementation("io.ktor:ktor-client-logging:$ktorVersion")
+                implementation("ch.qos.logback:logback-classic:$logbackVersion")
                 implementation("com.russhwolf:multiplatform-settings:0.7.4")
             }
         }

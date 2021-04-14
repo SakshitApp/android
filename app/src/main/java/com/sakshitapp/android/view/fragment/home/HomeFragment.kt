@@ -9,13 +9,16 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.sakshitapp.android.R
+import com.sakshitapp.android.adapter.BigCourseAdapter
 import com.sakshitapp.android.adapter.CourseStatusAdapter
 import com.sakshitapp.android.databinding.FragmentHomeBinding
 import com.sakshitapp.android.viewmodel.ViewModelFactory
 import com.sakshitapp.shared.model.CourseState
 import com.sakshitapp.shared.model.Course
+import com.sakshitapp.shared.model.Subscription
 
 class HomeFragment : Fragment() {
 
@@ -28,6 +31,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var adapter: CourseStatusAdapter
+    private lateinit var subsAdapter: BigCourseAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -49,6 +53,14 @@ class HomeFragment : Fragment() {
 
         })
         binding.courseRv.adapter = adapter
+        binding.subscribedRv.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, true)
+        subsAdapter = BigCourseAdapter(true, object: BigCourseAdapter.Callback{
+            override fun onClick(course: Subscription) {
+                findNavController()
+                    .navigate(R.id.action_navigation_home_to_courseFragment, bundleOf("courseId" to course.courseId))
+            }
+        })
+        binding.subscribedRv.adapter = subsAdapter
         binding.refresh.setOnRefreshListener {
             viewModel.loadDrafts(true)
         }
@@ -65,7 +77,14 @@ class HomeFragment : Fragment() {
     fun observe() {
         viewModel.getDrafts().observe(viewLifecycleOwner, { drafts ->
             binding.refresh.isRefreshing = false
-            adapter.submitList(drafts)
+            val subsVisibility = if (drafts.subscribed.isNotEmpty()) View.VISIBLE else View.GONE
+            val corVisibility = if (drafts.courses.isNotEmpty()) View.VISIBLE else View.GONE
+            binding.subscribedHeader.visibility = subsVisibility
+            binding.subscribedRv.visibility = subsVisibility
+            binding.courseHeader.visibility = corVisibility
+            binding.courseRv.visibility = corVisibility
+            subsAdapter.submitList(drafts.subscribed)
+            adapter.submitList(drafts.courses)
         })
         viewModel.error().observe(viewLifecycleOwner, {
             binding.refresh.isRefreshing = false

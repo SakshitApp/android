@@ -171,4 +171,8 @@
     <string name="lesson_failed_status">You have failed the quiz</string>
     <string name="result">Result</string>
     <string name="close">Close</string>
+    <string name="your_course">Yours Courses</string>
+    <string name="yous_subscriptions">Your Subscription</string>
+    <string name="no_result">No Result</string>
+    <string name="title_search">Search</string>
 </resources>

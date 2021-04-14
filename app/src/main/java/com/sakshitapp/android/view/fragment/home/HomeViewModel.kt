@@ -6,13 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sakshitapp.shared.model.CourseState
 import com.sakshitapp.shared.model.Course
+import com.sakshitapp.shared.model.Home
 import com.sakshitapp.shared.repository.CourseRepository
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: CourseRepository) : ViewModel() {
 
-    private val _draft: MutableLiveData<List<Course>> by lazy {
+    private val _draft: MutableLiveData<Home> by lazy {
         MutableLiveData()
     }
 
@@ -28,7 +29,7 @@ class HomeViewModel(private val repository: CourseRepository) : ViewModel() {
         loadDrafts()
     }
 
-    fun getDrafts(): LiveData<List<Course>> = _draft
+    fun getDrafts(): LiveData<Home> = _draft
     fun error(): LiveData<String> = _error
     fun progress(): LiveData<Boolean> = _progress
 

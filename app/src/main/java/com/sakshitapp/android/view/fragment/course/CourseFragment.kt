@@ -39,7 +39,6 @@ class CourseFragment : Fragment() {
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
-    private val willEdit get() = arguments?.getBoolean("willEdit") ?: false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,19 +58,6 @@ class CourseFragment : Fragment() {
         binding.likeBtn.setOnClickListener {
             viewModel.like()
         }
-        binding.buyNow.setOnClickListener {
-            if (willEdit) {
-                findNavController()
-                    .navigate(R.id.action_courseFragment_to_editCourseFragment, arguments)
-            } else {
-                viewModel.addToCart()
-            }
-        }
-        if (willEdit) {
-            binding.buyNow.text = getString(R.string.edit)
-        } else {
-            binding.buyNow.text = getString(R.string.add_to_cart)
-        }
         return root
     }
 
@@ -90,7 +76,7 @@ class CourseFragment : Fragment() {
 
                 })
                 binding.lesson.adapter = lessonAdapter
-                lessonAdapter.locked = data.transactionId == null
+                lessonAdapter.locked = data.course?.canEdit != true && data.transactionId == null
                 lessonAdapter.progress = data.progress
                 lessonAdapter.submitList(data?.course?.lessons)
                 reviewAdapter.submitList(data?.course?.review)
@@ -115,7 +101,20 @@ class CourseFragment : Fragment() {
                     addChipToView(it.name ?:"",languageRv)
                 }
                 review.editText?.text = null
-                binding.buyNow.visibility = if (data.transactionId == null) View.VISIBLE else View.GONE
+                buyNow.visibility = if (data.transactionId == null) View.VISIBLE else View.GONE
+                buyNow.setOnClickListener {
+                    if (data.course?.canEdit == true) {
+                        findNavController()
+                            .navigate(R.id.action_courseFragment_to_editCourseFragment, arguments)
+                    } else {
+                        viewModel.addToCart()
+                    }
+                }
+                if (data.course?.canEdit == true) {
+                    binding.buyNow.text = getString(R.string.edit)
+                } else {
+                    binding.buyNow.text = getString(R.string.add_to_cart)
+                }
             }
         })
         viewModel.error().observe(viewLifecycleOwner, {
