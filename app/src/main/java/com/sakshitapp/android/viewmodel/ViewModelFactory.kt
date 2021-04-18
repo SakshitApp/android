@@ -13,11 +13,13 @@ import com.sakshitapp.android.view.fragment.home.HomeViewModel
 import com.sakshitapp.android.view.fragment.home.StudentHomeViewModel
 import com.sakshitapp.android.view.fragment.lesson.LessonViewModel
 import com.sakshitapp.android.view.fragment.login.LoginViewModel
+import com.sakshitapp.android.view.fragment.notifications.NotificationsViewModel
 import com.sakshitapp.android.view.fragment.quiz.QuizViewModel
 import com.sakshitapp.android.view.fragment.roles.RoleViewModel
 import com.sakshitapp.android.view.fragment.search.SearchViewModel
 import com.sakshitapp.android.view.fragment.signup.SignUpViewModel
 import com.sakshitapp.shared.repository.CartRepository
+import com.sakshitapp.shared.repository.ConfigRepository
 import com.sakshitapp.shared.repository.CourseRepository
 
 class ViewModelFactory : ViewModelProvider.Factory {
@@ -50,6 +52,9 @@ class ViewModelFactory : ViewModelProvider.Factory {
         } else if (modelClass == CartViewModel::class.java) {
             return modelClass.getConstructor(CartRepository::class.java)
                 .newInstance(CartRepository()) as T
+        } else if (modelClass == NotificationsViewModel::class.java) {
+            return modelClass.getConstructor(ConfigRepository::class.java)
+                .newInstance(ConfigRepository()) as T
         }
         return modelClass.newInstance() as T
     }

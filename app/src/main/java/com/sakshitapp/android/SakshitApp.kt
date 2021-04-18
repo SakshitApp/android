@@ -1,6 +1,8 @@
 package com.sakshitapp.android
 
 import android.app.Application
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sakshitapp.shared.SharedFactory
 
 class SakshitApp: Application() {
@@ -8,6 +10,7 @@ class SakshitApp: Application() {
         super.onCreate()
         INSTANCE = this
         SharedFactory.initialize(this)
+        FirebaseMessaging.getInstance().subscribeToTopic("SakshitApp")
     }
 
     companion object {

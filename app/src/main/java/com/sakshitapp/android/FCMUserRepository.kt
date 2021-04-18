@@ -1,6 +1,9 @@
 package com.sakshitapp.android
 
+import android.util.Log
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.messaging.FirebaseMessaging
 import com.sakshitapp.shared.model.Role
 import com.sakshitapp.shared.model.User
 import com.sakshitapp.shared.repository.UserRepository
@@ -22,8 +25,35 @@ class FCMUserRepository : UserRepository() {
                     GlobalScope.launch {
                         kotlin.runCatching {
                             super.getUser(false)
-                        }.onSuccess {
-                            coroutine.resume(it ?: User(""))
+                        }.onSuccess { user ->
+                            FirebaseMessaging.getInstance().token.addOnCompleteListener(
+                                OnCompleteListener { task ->
+                                    if (!task.isSuccessful) {
+                                        Log.w(
+                                            TAG,
+                                            "Fetching FCM registration token failed",
+                                            task.exception
+                                        )
+                                        coroutine.resume(user ?: User(""))
+                                        return@OnCompleteListener
+                                    }
+
+                                    // Get new FCM registration token
+                                    val token = task.result
+                                    if (token != null) {
+                                        GlobalScope.launch {
+                                            kotlin.runCatching {
+                                                super.sendFCMToken(token)
+                                            }.onSuccess {
+                                                coroutine.resume(it ?: User(""))
+                                            }.onFailure {
+                                                coroutine.resumeWithException(it)
+                                            }
+                                        }
+                                    } else {
+                                        coroutine.resume(user ?: User(""))
+                                    }
+                                })
                         }.onFailure {
                             coroutine.resumeWithException(it)
                         }
@@ -79,7 +109,7 @@ class FCMUserRepository : UserRepository() {
                         }
                     }
                 } else {
-                    coroutine.resumeWithException(it.exception ?:Exception("Failed"))
+                    coroutine.resumeWithException(it.exception ?: Exception("Failed"))
                 }
             }
     }
@@ -102,9 +132,13 @@ class FCMUserRepository : UserRepository() {
                         }
                     }
                 } else {
-                    coroutine.resumeWithException(it.exception ?:Exception("Failed"))
+                    coroutine.resumeWithException(it.exception ?: Exception("Failed"))
                 }
             }
+    }
+
+    companion object {
+        private const val TAG = "FCMUserRepository"
     }
 
 }

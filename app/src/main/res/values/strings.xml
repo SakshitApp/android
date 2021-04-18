@@ -175,4 +175,7 @@
     <string name="yous_subscriptions">Your Subscription</string>
     <string name="no_result">No Result</string>
     <string name="title_search">Search</string>
+    <string name="default_notification_channel_id">sakshit_app_notification</string>
+    <string name="default_notification_channel_description">"Default firebase channel "</string>
+    <string name="default_notification_channel_name">Sakshit App</string>
 </resources>
