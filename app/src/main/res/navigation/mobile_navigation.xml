@@ -177,4 +177,9 @@
             android:id="@+id/action_navigation_search_to_courseFragment"
             app:destination="@id/courseFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_my_account"
+        android:name="com.sakshitapp.android.view.fragment.account.MyAccountFragment"
+        android:label="@string/title_my_account"
+        tools:layout="@layout/fragment_my_account"/>
 </navigation>

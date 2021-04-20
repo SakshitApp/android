@@ -3,6 +3,7 @@ package com.sakshitapp.android.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.sakshitapp.android.FCMUserRepository
+import com.sakshitapp.android.view.fragment.account.MyAccountViewModel
 import com.sakshitapp.android.view.fragment.cart.CartViewModel
 import com.sakshitapp.android.view.fragment.congratulation.CongratulationViewModel
 import com.sakshitapp.android.view.fragment.course.CourseViewModel
@@ -21,6 +22,7 @@ import com.sakshitapp.android.view.fragment.signup.SignUpViewModel
 import com.sakshitapp.shared.repository.CartRepository
 import com.sakshitapp.shared.repository.ConfigRepository
 import com.sakshitapp.shared.repository.CourseRepository
+import com.sakshitapp.shared.repository.UserRepository
 
 class ViewModelFactory : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
@@ -55,6 +57,12 @@ class ViewModelFactory : ViewModelProvider.Factory {
         } else if (modelClass == NotificationsViewModel::class.java) {
             return modelClass.getConstructor(ConfigRepository::class.java)
                 .newInstance(ConfigRepository()) as T
+        } else if (modelClass == MyAccountViewModel::class.java) {
+            return modelClass.getConstructor(
+                ConfigRepository::class.java,
+                FCMUserRepository::class.java
+            )
+                .newInstance(ConfigRepository(), FCMUserRepository()) as T
         }
         return modelClass.newInstance() as T
     }

@@ -77,6 +77,12 @@ open class UserRepository {
     }
 
     @Throws(Exception::class)
+    open suspend fun signOut() {
+        logMessage("UserRepository logout")
+        database.clearUser()
+    }
+
+    @Throws(Exception::class)
     open suspend fun delete() {
         logMessage("UserRepository delete")
         return api.updateUser(mapOf("isActive" to false)).let {

@@ -137,6 +137,11 @@ class FCMUserRepository : UserRepository() {
             }
     }
 
+    suspend fun logout() {
+        FirebaseAuth.getInstance().signOut()
+        super.signOut()
+    }
+
     companion object {
         private const val TAG = "FCMUserRepository"
     }

@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity(), ImageChooser, FileChooser {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications, R.id.navigation_cart
+                R.id.navigation_home, R.id.navigation_search, R.id.navigation_notifications, R.id.navigation_cart, R.id.navigation_my_account
             )
         )
         navController.addOnDestinationChangedListener { _, destination, _ ->
@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity(), ImageChooser, FileChooser {
                 R.id.navigation_search -> showBottomNav()
                 R.id.navigation_notifications -> showBottomNav()
                 R.id.navigation_cart -> showBottomNav()
+                R.id.navigation_my_account -> showBottomNav()
                 else -> hideBottomNav()
             }
         }

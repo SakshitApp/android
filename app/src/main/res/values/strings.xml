@@ -178,4 +178,16 @@
     <string name="default_notification_channel_id">sakshit_app_notification</string>
     <string name="default_notification_channel_description">"Default firebase channel "</string>
     <string name="default_notification_channel_name">Sakshit App</string>
+    <string name="logout">Logout</string>
+    <string name="subscriptions">Subscriptions</string>
+    <string name="completed">Completed</string>
+    <string name="active">Active</string>
+    <string name="inactive">Inactive</string>
+    <string name="balance">Balance: ₹ %1$,.2f</string>
+    <string name="redeem">Redeem</string>
+    <string name="name_header">Name</string>
+    <string name="email_header">Email</string>
+    <string name="change_name">Change Name?</string>
+    <string name="accept">Accept</string>
+    <string name="title_my_account">Profile</string>
 </resources>
