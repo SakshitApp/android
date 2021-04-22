@@ -17,6 +17,7 @@ import com.sakshitapp.android.BuildConfig
 import com.sakshitapp.android.R
 import com.sakshitapp.android.adapter.CartAdapter
 import com.sakshitapp.android.databinding.FragmentCartBinding
+import com.sakshitapp.android.listener.PaymentCallback
 import com.sakshitapp.android.view.MainStudentActivity
 import com.sakshitapp.android.viewmodel.ViewModelFactory
 import com.sakshitapp.shared.model.Course
@@ -100,7 +101,7 @@ class CartFragment : Fragment(), PaymentResultWithDataListener {
                 put("currency", data.currency)
                 put("amount", data.amount)
             }
-            (activity as? MainStudentActivity)?.payListener = this
+            (activity as? PaymentCallback)?.payListener = this
             checkout.open(activity, options)
         } catch (e: Exception) {
             Log.e(TAG, "Error in starting Razorpay Checkout", e)

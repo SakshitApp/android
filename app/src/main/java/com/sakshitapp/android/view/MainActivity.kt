@@ -11,17 +11,22 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.razorpay.PaymentData
+import com.razorpay.PaymentResultWithDataListener
 import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ActivityMainBinding
+import com.sakshitapp.android.listener.PaymentCallback
 import com.sakshitapp.android.view.fragment.edit.course.ImageChooser
 import com.sakshitapp.android.view.fragment.edit.lesson.FileChooser
 
 
-class MainActivity : AppCompatActivity(), ImageChooser, FileChooser {
+class MainActivity : AppCompatActivity(), PaymentCallback, ImageChooser, FileChooser {
 
     private lateinit var binding: ActivityMainBinding
     private var onImageSelect: ((imageUri: Uri?) -> Unit)? = null
     private var onSelect: ((uri: Uri?) -> Unit)? = null
+
+    override var payListener: PaymentResultWithDataListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,6 +117,13 @@ class MainActivity : AppCompatActivity(), ImageChooser, FileChooser {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    override fun onPaymentSuccess(p0: String?, p1: PaymentData?) {
+        payListener?.onPaymentSuccess(p0, p1)
+    }
+    override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
+        payListener?.onPaymentError(p0, p1, p2)
     }
 
     companion object {

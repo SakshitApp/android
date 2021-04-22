@@ -16,14 +16,15 @@ import com.razorpay.PaymentResultWithDataListener
 import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ActivityMainBinding
 import com.sakshitapp.android.databinding.ActivityMainStudentBinding
+import com.sakshitapp.android.listener.PaymentCallback
 import com.sakshitapp.android.view.fragment.edit.course.ImageChooser
 
-class MainStudentActivity: AppCompatActivity(), PaymentResultWithDataListener, ImageChooser {
+class MainStudentActivity: AppCompatActivity(), PaymentCallback, ImageChooser {
 
     private lateinit var binding: ActivityMainStudentBinding
     private var onImageSelect: ((imageUri: Uri?) -> Unit)? = null
 
-    var payListener: PaymentResultWithDataListener? = null
+    override var payListener: PaymentResultWithDataListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
