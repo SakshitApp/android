@@ -1,0 +1,76 @@
+CREATE TABLE User (
+uuid TEXT NOT NULL,
+name TEXT,
+photoURL TEXT,
+email TEXT,
+phoneNumber TEXT,
+role TEXT
+);
+
+CREATE TABLE Course (
+uuid TEXT NOT NULL,
+json TEXT NOT NULL,
+state TEXT
+);
+
+CREATE TABLE Language (
+uuid TEXT NOT NULL,
+name TEXT NOT NULL
+);
+
+CREATE TABLE Category (
+uuid TEXT NOT NULL,
+name TEXT NOT NULL
+);
+
+insertUser:
+INSERT INTO User(uuid, name, photoURL, email, phoneNumber, role)
+VALUES(?, ?, ?, ?, ?, ?);
+
+removeAllUser:
+DELETE FROM User;
+
+selectUser:
+SELECT * FROM User LIMIT 1;
+
+insertCourse:
+INSERT INTO Course(uuid, json, state)
+VALUES(?, ?, ?);
+
+removeAllCourse:
+DELETE FROM Course;
+
+removeCourse:
+DELETE FROM Course WHERE uuid = ?;
+
+selectCourseForState:
+SELECT * FROM Course WHERE uuid = ? AND state = ? LIMIT 1;
+
+selectCourseForOtherState:
+SELECT * FROM Course WHERE uuid = ? AND state != ? LIMIT 1;
+
+selectCoursesForState:
+SELECT * FROM Course WHERE state = ?;
+
+selectCoursesForOtherState:
+SELECT * FROM Course WHERE state != ?;
+
+insertLanguage:
+INSERT INTO Language(uuid, name)
+VALUES(?, ?);
+
+removeAllLanguage:
+DELETE FROM Language;
+
+selectAllLanguage:
+SELECT * FROM Language;
+
+insertCategory:
+INSERT INTO Category(uuid, name)
+VALUES(?, ?);
+
+removeAllCategory:
+DELETE FROM Category;
+
+selectAllCategory:
+SELECT * FROM Category;

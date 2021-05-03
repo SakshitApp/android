@@ -1,0 +1,15 @@
+CREATE TABLE Course (
+uuid TEXT NOT NULL,
+json TEXT NOT NULL,
+state TEXT
+);
+
+CREATE TABLE Language (
+uuid TEXT NOT NULL,
+name TEXT NOT NULL
+);
+
+CREATE TABLE Category (
+uuid TEXT NOT NULL,
+name TEXT NOT NULL
+);

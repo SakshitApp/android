@@ -1,0 +1,321 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.fragment.edit.course.EditCourseFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/profile_img"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toTopOf="@+id/photo_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/ic_baseline_image_24" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/upload_profile"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:background="@color/black_translucent"
+            android:src="@drawable/ic_baseline_camera_alt_24"
+            android:tint="@color/purple_700"
+            app:layout_constraintBottom_toTopOf="@+id/photo_divider"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            android:id="@+id/photo_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/email_header"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/email_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/email_header"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/email" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/email"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/email_divider" />
+
+        <View
+            android:id="@+id/email_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/name_header"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name_header"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/name_header"
+            android:layout_marginStart="16dp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/name" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintEnd_toStartOf="@+id/edit_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/name_divider" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/edit_name"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:textAllCaps="false"
+            android:background="@drawable/ic_baseline_edit_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/email_divider"
+            app:layout_constraintBottom_toTopOf="@+id/name_divider" />
+
+        <View
+            android:id="@+id/name_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/notification"/>
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/notification"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:checked="true"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
+            android:text="@string/title_notifications"
+            app:layout_constraintBottom_toTopOf="@+id/notification_divider"/>
+
+        <View
+            android:id="@+id/notification_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="16dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/balance"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/balance"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/balance"
+            android:textStyle="bold"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/redeem"
+            app:layout_constraintBottom_toTopOf="@+id/redeem_divider" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/redeem"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:text="@string/redeem"
+            android:textAllCaps="false"
+            app:cornerRadius="25dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/notification_divider"
+            app:layout_constraintBottom_toTopOf="@+id/redeem_divider" />
+
+        <View
+            android:id="@+id/redeem_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/black"
+            app:layout_constraintBottom_toTopOf="@+id/status_barrier"/>
+
+        <androidx.constraintlayout.widget.Barrier
+            android:id="@+id/status_barrier"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:barrierDirection="top"
+            app:constraint_referenced_ids="subscribed_header,completed_header,active_header,inactive_header,draft_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/subscribed_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/subscriptions"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/subscribed"
+            app:layout_constraintEnd_toStartOf="@+id/completed_header"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintHorizontal_chainStyle="spread"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/subscribed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/logout"
+            app:layout_constraintEnd_toEndOf="@+id/subscribed_header"
+            app:layout_constraintStart_toStartOf="@+id/subscribed_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/completed_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/completed"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/completed"
+            app:layout_constraintEnd_toStartOf="@+id/active_header"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/subscribed_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/completed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/logout"
+            app:layout_constraintEnd_toEndOf="@+id/completed_header"
+            app:layout_constraintStart_toStartOf="@+id/completed_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/active_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/active"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/active"
+            app:layout_constraintEnd_toStartOf="@+id/inactive_header"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/completed_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/active"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/logout"
+            app:layout_constraintEnd_toEndOf="@+id/active_header"
+            app:layout_constraintStart_toStartOf="@+id/active_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/inactive_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/inactive"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/inactive"
+            app:layout_constraintEnd_toStartOf="@+id/draft_header"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/active_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/inactive"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/logout"
+            app:layout_constraintEnd_toEndOf="@+id/inactive_header"
+            app:layout_constraintStart_toStartOf="@+id/inactive_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/draft_header"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/draft"
+            android:textStyle="bold"
+            android:gravity="center"
+            app:layout_constraintBottom_toTopOf="@+id/draft"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/inactive_header" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/draft"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:gravity="center"
+            android:text="0"
+            app:layout_constraintBottom_toTopOf="@+id/logout"
+            app:layout_constraintEnd_toEndOf="@+id/draft_header"
+            app:layout_constraintStart_toStartOf="@+id/draft_header" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/student"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="subscribed_header,subscribed,completed_header,completed"/>
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/teacher"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:constraint_referenced_ids="active_header,active,inactive_header,inactive,draft_header,draft,redeem_divider,redeem,balance"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/logout"
+            android:textAllCaps="false"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/loading"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_gravity="top"
+        app:indicatorColor="?attr/colorPrimaryVariant" />
+</FrameLayout>
