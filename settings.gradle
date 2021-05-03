@@ -1,0 +1,3 @@
+rootProject.name = "SakshitApp"
+include ':app'
+include ':shared'
