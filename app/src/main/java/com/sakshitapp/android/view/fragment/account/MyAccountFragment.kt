@@ -69,6 +69,7 @@ class MyAccountFragment : Fragment() {
     private fun observe() {
         viewModel.getData().observe(viewLifecycleOwner, { data ->
             binding.apply {
+                view.visibility = View.VISIBLE
                 Glide.with(root.context)
                     .load(data.user?.photoURL)
                     .transition(DrawableTransitionOptions.withCrossFade())

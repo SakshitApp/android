@@ -10,6 +10,8 @@ import com.sakshitapp.shared.model.RazorPayOrder
 import com.sakshitapp.shared.model.RazorPayVerify
 import com.sakshitapp.shared.repository.CartRepository
 import com.sakshitapp.shared.repository.CourseRepository
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 
@@ -31,9 +33,12 @@ class SearchViewModel(private val repository: CourseRepository) : ViewModel() {
     fun error(): LiveData<String> = _error
     fun progress(): LiveData<Boolean> = _progress
 
+    private var job: Job? =null
+
     fun search(text: String?) {
         if (text.isNullOrEmpty()) return
-        viewModelScope.launch {
+        job?.cancel()
+        job = viewModelScope.launch {
             kotlin.runCatching {
                 _progress.postValue(true)
                 repository.search(text)
@@ -41,8 +46,10 @@ class SearchViewModel(private val repository: CourseRepository) : ViewModel() {
                 _progress.postValue(false)
                 _data.postValue(it)
             }.onFailure {
-                _progress.postValue(false)
-                _error.postValue(it.localizedMessage)
+                if (it !is CancellationException) {
+                    _progress.postValue(false)
+                    _error.postValue(it.localizedMessage)
+                }
             }
         }
     }

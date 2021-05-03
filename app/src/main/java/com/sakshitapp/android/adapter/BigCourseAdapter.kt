@@ -1,6 +1,5 @@
 package com.sakshitapp.android.adapter
 
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,7 @@ import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 import com.sakshitapp.android.R
 import com.sakshitapp.android.databinding.ListItemBigCourseBinding
-import com.sakshitapp.shared.model.Course
+import com.sakshitapp.android.util.toDP
 import com.sakshitapp.shared.model.Subscription
 
 class BigCourseAdapter(private val showSmall: Boolean = true, private val listener: Callback) :
@@ -28,13 +27,11 @@ class BigCourseAdapter(private val showSmall: Boolean = true, private val listen
             false
         )
         if (itemCount > 1 && showSmall) {
-            layout.root.layoutParams = ViewGroup.LayoutParams(
-                TypedValue.applyDimension(
-                    TypedValue.COMPLEX_UNIT_DIP,
-                    258f,
-                    parent.context.resources.displayMetrics
-                ).toInt(), ViewGroup.LayoutParams.WRAP_CONTENT
+            val params = FrameLayout.LayoutParams(
+                250f.toDP(parent.context), ViewGroup.LayoutParams.WRAP_CONTENT
             )
+            params.setMargins(8f.toDP(parent.context), 0, 0, 8f.toDP(parent.context))
+            layout.root.layoutParams = params
         }
         return ViewHolder(
             layout,
